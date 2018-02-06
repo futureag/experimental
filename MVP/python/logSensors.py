@@ -1,5 +1,6 @@
 #Check sensors and log to file
 from si7021 import *
+from atlasPH import * 
 from logData import logData
 
 si=si7021()
@@ -15,3 +16,9 @@ try:
     logData("si7021_top", "Success", "humidity", "{:10.1f}".format(humid), '')
 except Exception as e:
         logData("si7921_top", "Failure", "humidity", '', str(e))
+
+try:
+    ph = atlasPH().getPH()
+    logData("PH", "Success", "ph", "{:10.2f}".format(ph), '')
+except Exception as e:
+        logData("ph", "Failure", "ph", '', str(e))

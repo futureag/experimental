@@ -32,3 +32,7 @@ python "$python_dir"getTempChart.py
 echo "Build humidity graph"
 #create the humidity graph
 python "$python_dir"getHumidityChart.py
+
+echo "Build ph graph"
+#create the ph graph
+python "$python_dir"getAtlasPHChart.py

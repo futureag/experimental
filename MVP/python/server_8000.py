@@ -7,8 +7,10 @@
 import SimpleHTTPServer
 import SocketServer
 import mimetypes
+import sys
 
-PORT = 8000
+#PORT = sys.argv[1]
+PORT = 8080
 
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 
