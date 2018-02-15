@@ -36,3 +36,7 @@ python "$python_dir"getHumidityChart.py
 echo "Build ph graph"
 #create the ph graph
 python "$python_dir"getAtlasPHChart.py
+
+echo "Build ec graph"
+#create the ec graph
+python "$python_dir"getAtlasECChart.py

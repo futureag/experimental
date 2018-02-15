@@ -1,10 +1,8 @@
 import smbus2, time
 
-
 address = 0x40
 rh_no_hold = 0xf5
 previous_temp = 0xe0
-
 
 class si7021(object):
     def __init__(self):

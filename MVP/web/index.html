@@ -55,6 +55,7 @@ div.tab button.active {
   <button class="tablinks" onclick="openTab(event, 'Temperature')">Temperature</button>
   <button class="tablinks" onclick="openTab(event, 'Humidity')">Humidity</button>
   <button class="tablinks" onclick="openTab(event, 'PH')">PH</button>
+  <button class="tablinks" onclick="openTab(event, 'EC')">EC</button>
   <button class="tablinks" onclick="openTab(event, 'Camera')">Camera</button>
   <button class="tablinks" onclick="openTab(event, 'About')">About</button>
 </div>
@@ -75,7 +76,15 @@ div.tab button.active {
 
 <div id="PH" class="tabcontent">
   <h3>PH</h3>
-    <object type="image/svg+xml" data="PH_chart.svg"/>
+    <object type="image/svg+xml" data="ph_chart.svg"/>
+	"Your browser does not support SVG
+    </object>
+</div>
+
+
+<div id="EC" class="tabcontent">
+  <h3>EC</h3>
+    <object type="image/svg+xml" data="ec_chart.svg"/>
 	"Your browser does not support SVG
     </object>
 </div>

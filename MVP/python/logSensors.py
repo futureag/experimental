@@ -1,6 +1,7 @@
 #Check sensors and log to file
 from si7021 import *
 from atlasPH import * 
+from atlasEC import *
 from logData import logData
 
 si=si7021()
@@ -21,4 +22,10 @@ try:
     ph = atlasPH().getPH()
     logData("PH", "Success", "ph", "{:10.2f}".format(ph), '')
 except Exception as e:
-        logData("ph", "Failure", "ph", '', str(e))
+        logData("PH", "Failure", "ph", '', str(e))
+
+try:
+    ec = atlasEC().getEC()
+    logData("EC", "Success", "ec", "{:10.2f}".format(ec), '')
+except Exception as e:
+        logData("EC", "Failure", "ec", '', str(e))

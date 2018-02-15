@@ -1,8 +1,10 @@
 import smbus2, time
 
-address = 0x63                   #Atlas PH Probe standard I2C address is 99 decimal.
+address = 0x64                   #Atlas EC Probe standard I2C address is 100  decimal.
 
-class atlasPH(object):
+class atlasEC(object):
+
+# The SMB stuff needs to be abstracted into a seperate class or module.
     def __init__(self):
         self.bus = smbus2.SMBus(1)
 
@@ -17,30 +19,30 @@ class atlasPH(object):
         try:
             return float(val)
         except ValueError:
-            print("Atlas PH probe value error: " + block)
+            print("Atlas EC probe value error: " + block)
             return 0.00
 
-    def extractPH(self, block):
+    def extractEC(self, block):
         if block[0] == 1:
             block.pop(0)
             return self.extractFloatFromString("".join(map(chr, block)))
         else:
-            print("Atlas PH probe status code error: " + block[0])
+            print("Atlas EC  probe status code error: " + block[0])
             return 0.00
 
     # -> float
-    def getPH(self):
+    def getEC(self):
         self.write('R')
-        time.sleep(0.9)
+        time.sleep(0.6)
         block = self.readBlock(8)
-        return self.extractPH(block)
+        return self.extractEC(block)
 
     def test(self):
         'Self test of the object'
-        print('*** Test Atlas PH ***')
-        print('PH: %.2f' %self.getPH())
+        print('*** Test Atlas EC  ***')
+        print('EC: %.2f' %self.getEC())
 
 if __name__=="__main__":
-    t=atlasPH()
+    t=atlasEC()
     t.test()
     
