@@ -1,8 +1,8 @@
 #Check sensors and log to file
 from si7021 import *
-from atlasPH import * 
-from atlasEC import *
 from logData import logData
+from atlasPH import *
+from ds18b20 import *
 
 si=si7021()
 
@@ -25,7 +25,7 @@ except Exception as e:
         logData("PH", "Failure", "ph", '', str(e))
 
 try:
-    ec = atlasEC().getEC()
-    logData("EC", "Success", "ec", "{:10.2f}".format(ec), '')
+    water_temp = ds18b20().getTempC()
+    logData("ds18b20_1", "Success", "water temperature", "{:10.1f}".format(water_temp), '')
 except Exception as e:
-        logData("EC", "Failure", "ec", '', str(e))
+        logData("ds18b20_1", "Failure", "water temperature", '', str(e))
