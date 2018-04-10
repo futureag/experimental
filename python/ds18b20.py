@@ -1,46 +1,44 @@
-import smbus2, time
+import glob
 
-address = 0x63                   #Atlas PH Probe standard I2C address is 99 decimal.
+class ds18b20(object):
 
-class atlasPH(object):
+    
+
     def __init__(self):
-        self.bus = smbus2.SMBus(1)
 
-    def write(self, command):
-        self.bus.write_byte(address, ord(command))
+       # The Raspbian kernal drivers create a link for each 1 wire device.  This link
+       # contains the 1 wire device id and thus must is different for every 
+       # physical sensor.  
+       self.rp_kernal_driver_link = "/sys/bus/w1/devices/28-051790c18bff"
+    
 
-    def readBlock(self, numBytes):
-        return self.bus.read_i2c_block_data(address, 0, 5)
+    def getTemp(self) -> float:
+    #TBD - add exception processing.
 
-    # val:str, -> float
-    def extractFloatFromString(self, val):
-        try:
-            return float(val)
-        except ValueError:
-            print("Atlas PH probe value error: " + block)
-            return 0.00
+       lines = []
 
-    def extractPH(self, block):
-        if block[0] == 1:
-            block.pop(0)
-            return self.extractFloatFromString("".join(map(chr, block)))
-        else:
-            print("Atlas PH probe status code error: " + block[0])
-            return 0.00
+       with open(self.rp_kernal_driver_link + "/w1_slave") as f:
+           lines = f.readlines()
 
-    # -> float
-    def getPH(self):
-        self.write('R')
-        time.sleep(0.9)
-        block = self.readBlock(8)
-        return self.extractPH(block)
+       if len(lines) != 2:
+          return False, 0
+
+       if lines[0].find("YES") == -1:
+          return False, 0
+
+       d = lines[1].strip().split('=')
+
+       if len(d) != 2:
+         return False, 0
+
+       return True, int(d[1])
 
     def test(self):
+        t = self.getTemp()
         'Self test of the object'
-        print('*** Test Atlas PH ***')
-        print('PH: %.2f' %self.getPH())
+        print('*** test temperatur sensor ***')
+        print('Sensor Id: %'  %self.rp_kernal_driver_link)
 
 if __name__=="__main__":
-    t=atlasPH()
-    t.test()
-    
+    wt = ds18b20()
+    wt.test()
