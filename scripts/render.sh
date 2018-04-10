@@ -37,6 +37,6 @@ echo "Build ph graph"
 #create the ph graph
 python "$python_dir"getAtlasPHChart.py
 
-echo "Build ec graph"
-#create the ec graph
-python "$python_dir"getAtlasECChart.py
+echo "Build water temperature graph"
+#create the water temperature graph
+python "$python_dir"getWaterTempChart.py
