@@ -5,41 +5,38 @@ from si7021 import *
 from logData import logData
 from atlasPH import *
 from ds18b20 import *
-from send_mqtt_data import send_sensor_data_via_mqtt
 
-def start_sensor_data_logger(mqtt_client, mqtt_sys_id):
+def start_sensor_data_logger(mqtt, mqtt_sys_id):
 
    si=si7021()
 
    while True:
 
       try:
-         timestamp = datetime.datetime.utcnow()
+         date_time = datetime.datetime.utcnow()
          temp = si.getTempC()
-         logData("si7021_top", "Success", "temperature", "{:10.1f}".format(temp), '')
-         send_sensor_data_via_mqtt(mqtt_client, "air temperature", "Success", "{:+.1f}".format(temp), "celsius", timestamp)
+
+         logData(mqtt, "si7021_top", "Success", "temperature", "{:+.1f}".format(temp), "celsius", date_time, '')
+
       except Exception as e:
-         logData("si7021_top", "Failure", "temperature", '', str(e))
+         logData(mqtt, "si7021_top", "Failure", "temperature", '', "celsius", date_time, str(e))
 
       try:
          humid = si.getHumidity()
-         logData("si7021_top", "Success", "humidity", "{:10.1f}".format(humid), '')
+         logData(mqtt, "si7021_top", "Success", "humidity", "{:+.1f}".format(humid), "percentage", date_time,  '')
       except Exception as e:
-         logData("si7921_top", "Failure", "humidity", '', str(e))
+         logData(mqtt, "si7921_top", "Failure", "humidity", '', "percentage", date_time, str(e))
 
       try:
          ph = atlasPH().getPH()
-         logData("PH", "Success", "ph", "{:10.2f}".format(ph), '')
+         logData(mqtt, "PH", "Success", "ph", "{:+.2f}".format(ph), "scalar", date_time, '')
       except Exception as e:
-         logData("PH", "Failure", "ph", '', str(e))
+         logData(mqtt, "PH", "Failure", "ph", '', "scalar", date_time, str(e))
 
       try:
          water_temp = ds18b20().getTempC()
-         logData("ds18b20_1", "Success", "water temperature", "{:10.1f}".format(water_temp), '')
+         logData(mqtt, "ds18b20_1", "Success", "water temperature", "{:+.1f}".format(water_temp), "celsius", date_time, '')
       except Exception as e:
-         logData("ds18b20_1", "Failure", "water temperature", '', str(e))
-
-      # Spit out an MQTT message
-                                       
-
+         logData(mqtt, "ds18b20_1", "Failure", "water temperature", '', "celsius", date_time, str(e))
+      
       time.sleep(5)

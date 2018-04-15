@@ -1,13 +1,19 @@
 from datetime import tzinfo, datetime
 import requests
 import json
-
+from send_mqtt_data import send_sensor_data_via_mqtt
 
 #Output to file
-def logData(name, status, attribute, value, comment):
+#logData("si7021_top", "Success", "temperature", "{:10.1f}".format(temp), '')
+def logData(mqtt, name, status, attribute, value, units, date_time, comment):
+
+    # Need to factor out the next call.    
     timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.utcnow())
     logFile(timestamp, name, status, attribute, value, comment)
     logDB(timestamp, name, status, attribute, value, comment)
+
+    if status == "Success":
+       send_sensor_data_via_mqtt(mqtt, attribute, value, units, date_time)
     
 def logFile(timestamp, name, status, attribute, value, comment):
     f = open('/home/pi/MVP/data/data.txt', 'a')

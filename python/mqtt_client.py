@@ -19,7 +19,8 @@ def start_mqtt_client(client):
 
    client.tls_set()
 
-   client.username_pw_set("ferguman", "0GedcyfFLBXxFqab")
+#TODO Need to source credentials from secure enclave.
+   client.username_pw_set("ferguman", "")
 
    client.connect("fop1.urbanspacefarms.com", 8883, 60)
 
