@@ -19,8 +19,9 @@ def start_mqtt_client(client):
 
    client.tls_set()
 
-#TODO Need to source credentials from secure enclave.
-   client.username_pw_set("ferguman", "")
+#TODO  need to open secure_configuration.py, ask the user for the passphrase and then get the mqtt connection info.
+#
+   client.username_pw_set("ferguman", "put password here")
 
    client.connect("fop1.urbanspacefarms.com", 8883, 60)
 

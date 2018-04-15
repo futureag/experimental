@@ -4,6 +4,12 @@ from mqtt_client import start_mqtt_client
 from logSensors import start_sensor_data_logger
 from mvp_configuration import *
 
+# if mqtt is enabled in mvp_configuration then ask the user for the passphrase and load the 
+# mqtt credentials from secure_configuration.py
+# Note: Need to create a python application that allows the user to add configuration
+#       information to secure_configuration.py:w
+
+
 # Setup global variables.
 #
 mqtt_client = paho.mqtt.client.Client(mqtt_client_id)
