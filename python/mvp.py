@@ -3,11 +3,29 @@ import threading
 from mqtt_client import start_mqtt_client 
 from logSensors import start_sensor_data_logger
 from mvp_configuration import *
+from secure_configuration import *
+from subprocess import call
+from sys import exit
 
 # if mqtt is enabled in mvp_configuration then ask the user for the passphrase and load the 
 # mqtt credentials from secure_configuration.py
 # Note: Need to create a python application that allows the user to add configuration
-#       information to secure_configuration.py:w
+#       information to secure_configuration.py
+#
+if enable_mqtt == True:
+   aes_passphrase = input("Enter your passphrase: ")
+   print(aes_passphrase)
+  
+   # call open SSL to decrypt the encrypted password.
+   open_ssl_decrypt_command = 'echo "' + encrypted_mqtt_password + '" | openssl enc -d -k "' +  aes_passphrase + '" -a -aes-256-cbc'
+   mqqt_password = call(open_ssl_decrypt_command, shell=True) 
+
+
+   print(mqqt_password)
+
+   
+   exit()
+
 
 
 # Setup global variables.
