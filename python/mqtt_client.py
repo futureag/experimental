@@ -11,7 +11,7 @@ def on_message(client, userdata, message):
 def on_publish(mqttc, obj, mid):
    print("published")
 
-def start_mqtt_client(client):
+def start_mqtt_client(client, mqtt_password):
 
    # Configure the client
    client.on_connect = on_connect
@@ -21,7 +21,7 @@ def start_mqtt_client(client):
 
 #TODO  need to open secure_configuration.py, ask the user for the passphrase and then get the mqtt connection info.
 #
-   client.username_pw_set("ferguman", "put password here")
+   client.username_pw_set("ferguman", mqtt_password)
 
    client.connect("fop1.urbanspacefarms.com", 8883, 60)
 
