@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+from mvp_configuration import *
 
 def on_connect(client, userdata, flags, rc):
    print("Connected: " + str(rc))
@@ -19,11 +20,9 @@ def start_mqtt_client(client, mqtt_password):
 
    client.tls_set()
 
-#TODO  need to open secure_configuration.py, ask the user for the passphrase and then get the mqtt connection info.
-#
-   client.username_pw_set("ferguman", mqtt_password)
+   client.username_pw_set(mqtt_username, mqtt_password)
 
-   client.connect("fop1.urbanspacefarms.com", 8883, 60)
+   client.connect(mqtt_url, mqtt_port, 60)
 
    # Start the MQTT client
    client.loop_forever()

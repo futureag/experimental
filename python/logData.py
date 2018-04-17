@@ -2,9 +2,10 @@ from datetime import tzinfo, datetime
 import requests
 import json
 from send_mqtt_data import send_sensor_data_via_mqtt
+from mvp_configuration import *
 
-#Output to file
-#logData("si7021_top", "Success", "temperature", "{:10.1f}".format(temp), '')
+#Output to file and MQTT
+#
 def logData(mqtt, name, status, attribute, value, units, date_time, comment):
 
     # Need to factor out the next call.    
@@ -12,7 +13,7 @@ def logData(mqtt, name, status, attribute, value, units, date_time, comment):
     logFile(timestamp, name, status, attribute, value, comment)
     logDB(timestamp, name, status, attribute, value, comment)
 
-    if status == "Success":
+    if status == "Success" and enable_mqtt == True and mqtt_publish_sensor_readings == True:
        send_sensor_data_via_mqtt(mqtt, attribute, value, units, date_time)
     
 def logFile(timestamp, name, status, attribute, value, comment):

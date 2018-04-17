@@ -1,4 +1,4 @@
 *.pyc
-secure_configuration.py
 *.swp
+mvp_configuration.py
 __pycache__/
