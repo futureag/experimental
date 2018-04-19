@@ -6,15 +6,15 @@ from mvp_configuration import *
 
 #Output to file and MQTT
 #
-def logData(mqtt, name, status, attribute, value, units, date_time, comment):
+def logData(mqtt, sensor_name, status, attribute, value, units, date_time, comment):
 
     # Need to factor out the next call.    
     timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.utcnow())
-    logFile(timestamp, name, status, attribute, value, comment)
-    logDB(timestamp, name, status, attribute, value, comment)
+    logFile(timestamp, sensor_name, status, attribute, value, comment)
+    logDB(timestamp, sensor_name, status, attribute, value, comment)
 
     if status == "Success" and enable_mqtt == True and mqtt_publish_sensor_readings == True:
-       send_sensor_data_via_mqtt(mqtt, attribute, value, units, date_time)
+       send_sensor_data_via_mqtt(mqtt, sensor_name, attribute, value, units, date_time)
     
 def logFile(timestamp, name, status, attribute, value, comment):
     f = open('/home/pi/MVP/data/data.txt', 'a')

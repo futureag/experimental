@@ -7,10 +7,9 @@ from subprocess import *
 from sys import *
 import getpass
 
-# if mqtt is enabled in mvp_configuration then ask the user for the passphrase and load the 
-# mqtt credentials from secure_configuration.py
-# Note: Need to create a python application that allows the user to add configuration
-#       information to secure_configuration.py
+# If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
+# Note: Need to create a python application that allows the user to add secure
+# configuration information to mvp_configuration.py
 #
 if enable_mqtt == True:
 
