@@ -1,0 +1,9 @@
+On can write python dictionaries to a .py file. 
+Consider storing configuration settings in this way.
+
+look at the following web page to get an idea of how to
+unit test in python. Uses the pytest libarary.
+
+https://mattjegan.com/Getting-started-with-Python-testing/
+
+
