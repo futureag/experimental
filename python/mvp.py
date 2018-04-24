@@ -1,11 +1,14 @@
+import sys
 import paho.mqtt.client
 import threading
 from mqtt_client import start_mqtt_client 
 from logSensors import start_sensor_data_logger
-from mvp_configuration import *
 from subprocess import * 
 from sys import *
 import getpass
+
+sys.path.append('~/openag-mvp-configuration/')
+from mvp_configuration import *
 
 # If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
 # Note: Need to create a python application that allows the user to add secure

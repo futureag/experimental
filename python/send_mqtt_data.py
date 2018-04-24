@@ -1,5 +1,8 @@
-from mvp_configuration import mqtt_sys_id
+import sys
 import datetime
+
+sys.path.append('~/openag-mvp-configuration/')
+from mvp_configuration import mqtt_sys_id
 
 def send_sensor_data_via_mqtt(mqtt_client, sensor_name, data_name, value, units, date_time):
 

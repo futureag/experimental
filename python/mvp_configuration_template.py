@@ -4,18 +4,18 @@
 enable_mqtt = True
 mqtt_publish_sensor_readings = True 
 
-# If you are going to send data to an MVP cloud then the ask your MVP cloud provider
-# to provide the following two ids:
-mqtt_client_id = "123e4567-e89b-12d3-a456-426655440000"
+# If you are going to send data to an MVP cloud then ask your MVP cloud provider
+# to provide the following two ids which are uuid's:
+mqtt_client_id = ""
 
 # TBD - need to rename mqtt_sys_id to system_id.  This parameter is not specific to mqtt.
-mqtt_sys_id = "123e4567-e89b-12d3-a456-426655440000"
+mqtt_sys_id = ""
 
 # Note that the MVP only supports TLS (aka SSL) communication to the MQTT broker .  If your broker
 # does not support HTTPS then it can't be used with the MVP.
 #
-mqtt_url = "fop1.urbanspacefarms.com"
-mqtt_port = 8883
+mqtt_url = ""
+mqtt_port = 
 
 # MQTT account credentials -> username and password
 # The MVP client needs to know the username and password of the MQTT broker to which the client 
@@ -32,5 +32,5 @@ mqtt_port = 8883
 # After you generate the encrypted password then modify the value for "encrypted_mqtt_password"
 # to be the value that you generated.
 #
-mqtt_username = "ferguman"
-encrypted_mqtt_password = "U2FsdGVkX19sFNjVrVY9hVNzbiRTMJckL2P5izv2umVl05jrFtE9mBWmGvcADr8s" 
+mqtt_username = ""
+encrypted_mqtt_password = "" 
