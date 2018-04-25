@@ -1,12 +1,15 @@
+from sys import path
 from datetime import tzinfo, datetime
 import requests
 import json
 from send_mqtt_data import send_sensor_data_via_mqtt
-from mvp_configuration import *
+
+path.append('/opt/mvp/config')
+from config import enable_mqtt, mqtt_publish_sensor_readings 
 
 #Output to file and MQTT
 #
-def logData(mqtt, sensor_name, status, attribute, value, units, date_time, comment):
+def logData(device, mqtt, sensor_name, status, attribute, subject, value, units, date_time, comment):
 
     # Need to factor out the next call.    
     timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.utcnow())
@@ -14,7 +17,10 @@ def logData(mqtt, sensor_name, status, attribute, value, units, date_time, comme
     logDB(timestamp, sensor_name, status, attribute, value, comment)
 
     if status == "Success" and enable_mqtt == True and mqtt_publish_sensor_readings == True:
-       send_sensor_data_via_mqtt(mqtt, sensor_name, attribute, value, units, date_time)
+       print("########## got to mqtt send data command ############")
+       send_sensor_data_via_mqtt(device, mqtt, sensor_name, attribute, subject, value, units, date_time)
+    else:
+       print("########## sensor read error #############")
     
 def logFile(timestamp, name, status, attribute, value, comment):
     f = open('/home/pi/MVP/data/data.txt', 'a')

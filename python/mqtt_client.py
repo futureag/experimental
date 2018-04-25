@@ -1,12 +1,11 @@
-import sys
+from sys import path
 import paho.mqtt.client as mqtt
 
-sys.path.append('/home/pi/openag-mvp-configuration')
-#sys.path.append('~/openag-mvp-configuration/')
-from mvp_configuration import *
+path.append('/opt/mvp/config')
+from config import *
 
 def on_connect(client, userdata, flags, rc):
-   print("Connected: " + str(rc))
+   print("############ MQTT client Connected: #################" + str(rc))
    # Subscribe to everthing.
    # client.subscribe("#", 2)
 

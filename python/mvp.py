@@ -7,8 +7,8 @@ from subprocess import *
 from sys import *
 import getpass
 
-sys.path.append('~/openag-mvp-configuration/')
-from mvp_configuration import *
+sys.path.append('/opt/mvp/config')
+from config import *
 
 # If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
 # Note: Need to create a python application that allows the user to add secure

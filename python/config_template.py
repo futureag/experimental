@@ -1,5 +1,14 @@
 # MVP Configuration
 
+# This file is expected to be placed somewhere such as %APP_DATA%/mvp/config (on Windows) or
+# or /opt/mvp/config (on Linux).  In order to generate this file for a new installation do the
+# following 2 things:
+# 1. Edit config_file_location.py and set the value of TBD to the path where the config file
+#    will be stored.
+# 2. Run TBD to generate the config file. this program will ask for certain information and then
+#    create and store the file in the place that you designate.
+#
+
 # MQTT Settings
 enable_mqtt = True
 mqtt_publish_sensor_readings = True 
