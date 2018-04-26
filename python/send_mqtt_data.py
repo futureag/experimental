@@ -2,7 +2,7 @@ from sys import path
 import datetime
 
 path.append('/opt/mvp/config')
-from config import mqtt_sys_id
+from config import organization_guid
 
 def send_sensor_data_via_mqtt(device, mqtt_client, sensor_name, attribute_name, subject_name, value, units, date_time):
 
@@ -37,6 +37,6 @@ def send_sensor_data_via_mqtt(device, mqtt_client, sensor_name, attribute_name, 
                     '"units":"'                   + units + '", '\
                     '"time":"'                    + date_time.isoformat() + '"}'
   
-   pub_response = mqtt_client.publish("data/v1/" + mqtt_sys_id, payload=payload_value, qos=2) 
+   pub_response = mqtt_client.publish("data/v1/" + organization_guid, payload=payload_value, qos=2) 
 
    return 1

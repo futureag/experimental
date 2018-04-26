@@ -47,7 +47,7 @@ else:
 # Start the light controller 
 
 # Start the sensor data logger
-t2 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client, mqtt_sys_id))
+t2 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
 
 # Start the camera controller
 
