@@ -30,12 +30,13 @@ def send_sensor_data_via_mqtt(device, mqtt_client, sensor_name, attribute_name, 
       return 0
 
    payload_value = '{"sensor":"' + device['name'] + '", '\
-                    '"device_id":"'        + device['device_id'] + '", '\
-                    '"attribute":"'        + attribute_name + '", '\
-                    '"subject":"'          + subject_name + '", '\
-                    '"value":"'            + value + '", '\
-                    '"units":"'            + units + '", '\
-                    '"time":"'             + date_time.isoformat() + '"}'
+                    '"device_id":"'           + device['device_id'] + '", '\
+                    '"subject":"'             + subject_name + '", '\
+                    '"subject_location_id":"' + device['subject_location_id'] + '", '\
+                    '"attribute":"'           + attribute_name + '", '\
+                    '"value":"'               + value + '", '\
+                    '"units":"'               + units + '", '\
+                    '"time":"'                + date_time.isoformat() + '"}'
   
    pub_response = mqtt_client.publish("data/v1/" + organization_guid, payload=payload_value, qos=2) 
 

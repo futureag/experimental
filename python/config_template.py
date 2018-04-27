@@ -58,15 +58,15 @@ system = {'name':'germinator',
 
 device_1 = {'name':'si7021',
             'device_id':'c6bc257e-2d18-41f0-b9f4-d0ca1f1224df',
-            'location':'chamber',
-            'location_id':'c0b1d0dc-66a4-46da-8aec-cc308a3359a1',
+            'subject_location':'chamber',
+            'subject_location_id':'c0b1d0dc-66a4-46da-8aec-cc308a3359a1',
             'attributes':[{'name':'temperature', 'id':'b794687a-9970-4d12-a890-3aba98332ab8'},
                           {'name':'humidity', 'id':'3c36bae6-ec85-4898-9ab4-187dcd8c91f2'}]}
 
 device_2 = {'name':'ds18b20',
             'device_id':'f4682ae0-601b-402e-ba98-5aa1a46cb2b2',
-            'location':'resevoir',
-            'location_id':'309e865b-f996-44ba-8893-8d5ac3b2d747',
+            'subject_location':'resevoir',
+            'subject_location_id':'309e865b-f996-44ba-8893-8d5ac3b2d747',
             'attributes': [{'name':"temperature", 'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
 
 system_composition = [organization, system, device_1, device_2]
