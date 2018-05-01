@@ -44,6 +44,14 @@ mqtt_port = 0
 mqtt_username = ""
 encrypted_mqtt_password = "" 
 
+# ######## Light Controller #########
+#
+# Specify as many on/off times as you like.  Resolution is 1 minute so all light events
+# occur on the minute.  Specify the times relative to the time zone of the system that the
+# MVP is running on.
+#
+light_controller_program = (('on', '2:28 PM'), ('off', '2:29 PM'))
+
 # ######## Device Ids ############
 # Use the settings below to define the system composition. Once things are working then
 # figure out a better way to configure systems.

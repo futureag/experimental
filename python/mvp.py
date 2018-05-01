@@ -1,63 +1,54 @@
 import sys
-import paho.mqtt.client
 import threading
-from mqtt_client import start_mqtt_client 
-from logSensors import start_sensor_data_logger
 from subprocess import * 
+from mqtt_client import start_mqtt_client_thread
+from light_controller import start_light_controller
+from logSensors import start_sensor_data_logger
 from sys import *
 import getpass
 
 sys.path.append('/opt/mvp/config')
 from config import *
 
-# If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
-# Note: Need to create a python application that allows the user to add secure
-# configuration information to mvp_configuration.py
-#
+def get_passphrase():
+
+   # If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
+   if enable_mqtt == True:
+      #- aes_passphrase = getpass.getpass("Enter your passphrase: ")
+      return getpass.getpass("Enter your passphrase: ")
+   else:
+      return None
+
+
+config_file_passphrase = get_passphrase()
+
+# Start the MQTT client thread if so configured.
 if enable_mqtt == True:
-
-   aes_passphrase = getpass.getpass("Enter your passphrase: ")
-  
-   # call open SSL to decrypt the encrypted password.
-   open_ssl_decrypt_command = 'echo "' + encrypted_mqtt_password + '" | openssl enc -d -k "' +  aes_passphrase + '" -a -aes-256-cbc'
-   
-   try:
-      #TBD - At some point upgrade to the new Python (3.5 or newer) and use the .run commmand.
-      password_decrypt_results = check_output(open_ssl_decrypt_command, shell=True) 
-      mqtt_password = password_decrypt_results.decode("utf-8")[0:-1]
-      # print("MQTT password: " + mqtt_password + "\n") 
-   except CalledProcessError as e:
-      print("Execution of openssl failed with return code:{}.\n".format(e.returncode))
+   result = start_mqtt_client_thread(config_file_passphrase, encrypted_mqtt_password)
+   if result[0] == True:
+      mqtt_client = result[1]
+      t1 = result[2]
+   else:
+      print('ERROR. Unable to start an MQTT client.')
       exit()
-         
-   mqtt_client = paho.mqtt.client.Client(mqtt_client_id)
-
-   # Create the MQTT client thread 
-   #
-   t1 = threading.Thread(target=start_mqtt_client, name="mqtt_client", args=(mqtt_client, mqtt_password))
-   
-   # Start the MQTT client
-   t1.start()
-   # TBD - add code here to wait for the mqtt connection to complete before proceeding.
-else:
-   mqtt_client = None
 
 # Start the fan controller
 
 # Start the light controller 
+t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client,))
 
 # Start the sensor data logger
-t2 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
+t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
 
 # Start the camera controller
 
 # Start the website chart geneator
 
-
 t2.start()
+t3.start()
 
 # Wait till all the threads finish
 if enable_mqtt == True:
    t1.join()
 
-t2.join()
+t3.join()
