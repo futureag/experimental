@@ -52,7 +52,20 @@ encrypted_mqtt_password = ""
 #
 light_controller_program = (('on', '2:28 PM'), ('off', '2:29 PM'))
 
-# ######## Device Ids ############
+# ####### Fan Controller #########
+# Speciy the target max chamber air temperature in Celsius.
+# The fan will be turned on when the temperature exceeds this value.
+#
+max_air_temperature = 30
+
+# ######## Camera Controller #########
+# You must include a slash after the last subdirectory - TBD: clean this up.
+# TBD: Need to figure out how to create the picture directory for newly created 
+#      instances of the MVP.
+#
+image_directory = '/home/pi/openag-mvp/pictures/'
+camera_controller_program = ('hourly', 10)
+
 # Use the settings below to define the system composition. Once things are working then
 # figure out a better way to configure systems.
 #   

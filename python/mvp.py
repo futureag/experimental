@@ -6,6 +6,8 @@ from light_controller import start_light_controller
 from logSensors import start_sensor_data_logger
 from sys import *
 import getpass
+from adjustThermostat import start_fan_controller
+from camera_controller import start_camera_controller
 
 sys.path.append('/opt/mvp/config')
 from config import *
@@ -40,15 +42,24 @@ t2 = threading.Thread(target=start_light_controller, name="light_controller", ar
 # Start the sensor data logger
 t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
 
+# Start the fan controller (aka thermostat)
+t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(mqtt_client,))
+
 # Start the camera controller
+t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(mqtt_client,))
 
 # Start the website chart geneator
 
 t2.start()
 t3.start()
+t4.start()
+t5.start()
 
 # Wait till all the threads finish
 if enable_mqtt == True:
    t1.join()
 
+t2.join()
 t3.join()
+t4.join()
+t5.join()

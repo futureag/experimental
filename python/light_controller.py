@@ -15,7 +15,7 @@ def setLightOff():
     lightPin = 29
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    print ("Turn lights Off")
+    #- print ("Turn lights Off")
     GPIO.setup(lightPin, GPIO.OUT)
     # For the relaly board, use the first line
     # For the Sparkfun PowerSwitch tail (https://www.sparkfun.com/products/10747)
@@ -29,7 +29,7 @@ def setLightOn():
     lightPin = 29
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    print ("Turn lights On")
+    #- print ("Turn lights On")
     GPIO.setup(lightPin, GPIO.OUT)
     # For the relaly board, use the first line
     # For the Sparkfun PowerSwitch tail (https://www.sparkfun.com/products/10747)
@@ -57,7 +57,7 @@ def run_controller(light_state, program):
 
       # print(x)
       set_time = datetime.strptime(x[1],  '%I:%M %p').time()
-      print('last update time: {}, set time: {}, this update time: {}.'.format(light_state['last_update'], set_time, this_update_time))
+      #- print('last update time: {}, set time: {}, this update time: {}.'.format(light_state['last_update'], set_time, this_update_time))
 
       if light_state['last_update'] <= set_time and this_update_time >= set_time:
 
