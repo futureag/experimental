@@ -66,6 +66,36 @@ max_air_temperature = 30
 image_directory = '/home/pi/openag-mvp/pictures/'
 camera_controller_program = ('hourly', 10)
 
+# ######## Web Charting Controller #########
+# charting_interval (in minutes) sets the refresh time for the web charts.
+charting_interval = 1
+chart_output_folder = '/home/pi/MVP/web/'
+couchdb_location_url = 'http://127.0.0.1:5984/mvp_sensor_data/'
+
+temp_chart = {'couch_key_name':'temperature',
+              'chart_title':'Air Temperature',
+              'y_axis_title':'Degrees C',
+              'x_axis_title':'Timestamp (hover over to display date)',
+              'data_stream_name':'Air Temp.',
+              'chart_file_name':'temp_chart.svg'}
+
+humidity_chart = {'couch_key_name':'humidity',
+              'chart_title':'Humidity',
+              'y_axis_title':'Percent',
+              'x_axis_title':'Timestamp (hover over to display date)',
+              'data_stream_name':'Humidity',
+              'chart_file_name':'humidity_chart.svg'}
+
+water_temp_chart = {'couch_key_name':'water temperature',
+              'chart_title':'Water Temperature',
+              'y_axis_title':'Degrees C',
+              'x_axis_title':'Timestamp (hover over to display date)',
+              'data_stream_name':'Water Temp',
+              'chart_file_name':'water_temp_chart.svg'}
+
+# Need a way to dynamically create this setting when the user is setting up their MVP
+chart_list = (temp_chart, humidity_chart, water_temp_chart)
+
 # Use the settings below to define the system composition. Once things are working then
 # figure out a better way to configure systems.
 #   

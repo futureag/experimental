@@ -8,6 +8,7 @@ from sys import *
 import getpass
 from adjustThermostat import start_fan_controller
 from camera_controller import start_camera_controller
+from web_chart_controller import start_web_chart_controller
 
 sys.path.append('/opt/mvp/config')
 from config import *
@@ -36,24 +37,27 @@ if enable_mqtt == True:
 
 # Start the fan controller
 
-# Start the light controller 
+# Create the light controller 
 t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client,))
 
-# Start the sensor data logger
+# Create the sensor data logger
 t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
 
-# Start the fan controller (aka thermostat)
+# Create the fan controller (aka thermostat)
 t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(mqtt_client,))
 
-# Start the camera controller
+# Create the camera controller
 t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(mqtt_client,))
 
-# Start the website chart geneator
+# Create the website chart geneator
+t6 = threading.Thread(target=start_web_chart_controller, name="web_chart_controller")
 
+# Start threads t2 - t6
 t2.start()
 t3.start()
 t4.start()
 t5.start()
+t6.start()
 
 # Wait till all the threads finish
 if enable_mqtt == True:
@@ -63,3 +67,4 @@ t2.join()
 t3.join()
 t4.join()
 t5.join()
+t6.join()

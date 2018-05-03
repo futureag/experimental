@@ -24,10 +24,6 @@ def adjustThermostat(thermostat_state, temp):
     #print ("Adjust Thermostat %s" %str(temp))
 
     _fanPin = 35
-    #- _priorFanOn = "priorFanOn"
-    #- _targetTemp = "targetTemp"
-    #- priorFanOn = variable.env['priorFanOn']
-    #- targetTemp = variable.env['targetTemp']
     priorFanOn = thermostat_state['fan_on']
     targetTemp = thermostat_state['target_temp']
     #print("Target Temp %s" %targetTemp)
@@ -51,6 +47,7 @@ def adjustThermostat(thermostat_state, temp):
         currentFanOn = False
         #print("Fan Off")
 
-    print('{:%Y-%m-%d %H:%M:%S} Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(datetime.utcnow(), thermostat_state['target_temp'], temp, fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
+    print('{:%Y-%m-%d %H:%M:%S} Fan Controller: Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(datetime.utcnow(),\
+          thermostat_state['target_temp'], temp, fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
 
     return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}

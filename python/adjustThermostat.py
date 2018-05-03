@@ -24,8 +24,6 @@ def start_fan_controller(mqtt_client):
 
   while True:
 
-      print('{:%Y-%m-%d %H:%M:%S} Fan Controller Awakened'.format(datetime.utcnow()))
-
       #update target temp
       thermostat_state['target_temp'] = get_target_temp() 
 
