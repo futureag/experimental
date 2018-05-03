@@ -65,10 +65,12 @@ max_air_temperature = 30
 #
 image_directory = '/home/pi/openag-mvp/pictures/'
 camera_controller_program = ('hourly', 10)
+copy_current_image = True
+current_image_copy_location = '/home/pi/MVP/web/image.jpg'
 
 # ######## Web Charting Controller #########
 # charting_interval (in minutes) sets the refresh time for the web charts.
-charting_interval = 1
+charting_interval = 15
 chart_output_folder = '/home/pi/MVP/web/'
 couchdb_location_url = 'http://127.0.0.1:5984/mvp_sensor_data/'
 
