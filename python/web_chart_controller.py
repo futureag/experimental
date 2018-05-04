@@ -49,8 +49,8 @@ def start_web_chart_controller():
             print('ERROR. render.sh call failed with the following results:')
             #print(charting_results)
 
-      else:
-         print('{:%Y-%m-%d %H:%M:%S} Web Chart Generator: last charts generated at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
-                state['last_chart_generation_date']))
+      #else:
+      #   print('{:%Y-%m-%d %H:%M:%S} Web Chart Generator: last charts generated at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
+      #          state['last_chart_generation_date']))
 
       sleep(5)

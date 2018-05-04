@@ -72,7 +72,7 @@ def run_controller(light_state, program):
                print('ERROR. Illegal value ({}) for light command.'.format(x[0]))
                return {'error':True, 'light_on':light_state['light_on'], 'last_update':this_update_time}
 
-         print('{:%Y-%m-%d %H:%M:%S} Turning light {}.'.format(datetime.utcnow(), x[0])) 
+         print('{:%Y-%m-%d %H:%M:%S} Turning light {}.'.format(datetime.now(), x[0])) 
          light_cmd()
          return {'error':False, 'light_on':light_on, 'last_update':this_update_time}
 
@@ -87,7 +87,6 @@ def start_light_controller(mqtt_client):
    light_state = {'error':False, 'light_on':False, 'last_update':datetime.now().time()}
 
    while True:
-      print('{:%Y-%m-%d %H:%M:%S} Light Controller Awakened'.format(datetime.utcnow()))
 
       light_state = run_controller(light_state, light_controller_program)
 

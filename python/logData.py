@@ -14,7 +14,7 @@ from config import enable_mqtt, mqtt_publish_sensor_readings
 def logData(sensor_name, status, attribute, subject, value, units, comment):
 
     # Need to factor out the next call.    
-    timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.utcnow())
+    timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
     logFile(timestamp, sensor_name, status, attribute, value, comment)
     logDB(timestamp, sensor_name, status, attribute, value, comment)
 
@@ -23,7 +23,7 @@ def logData(sensor_name, status, attribute, subject, value, units, comment):
     
 def logFile(timestamp, name, status, attribute, value, comment):
     f = open('/home/pi/MVP/data/data.txt', 'a')
-    s= timestamp + " " + name + ", " + status + ", " + attribute + ", " + value + "," + comment
+    s= timestamp + ' Local Data Logger: ' + name + ", " + status + ", " + attribute + ", " + value + "," + comment
     print(s)
     f.write(s + "\n")
     f.close()
@@ -36,7 +36,7 @@ def logDB(timestamp, name, status, attribute, value, comment):
             'value' : value,
             'comment' : comment}
     json_data = json.dumps(log_record)
-    #print(json.dumps(log_record, indent=4, sort_keys=True))
+    # print(json.dumps(log_record, indent=4, sort_keys=True))
     headers = {'content-type': 'application/json'}
     r = requests.post('http://localhost:5984/mvp_sensor_data', data = json_data, headers=headers)
     #print(r.json())

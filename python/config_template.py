@@ -1,7 +1,7 @@
 # MVP Configuration
 
 # This file is expected to be placed somewhere such as %APP_DATA%/mvp/config (on Windows) or
-# or /opt/mvp/config (on Linux).  In order to generate this file for a new installation do the
+# or /opt/mvp/config (on Linux).  In order to generate this file for a new installation do the 
 # following 2 things:
 # 1. Edit config_file_location.py and set the value of TBD to the path where the config file
 #    will be stored.
@@ -9,22 +9,19 @@
 #    create and store the file in the place that you designate.
 #
 
-# MQTT Settings
+# ########### MQTT Settings #############
 enable_mqtt = True
 mqtt_publish_sensor_readings = True 
 
-# If you are going to send data to an MVP cloud then ask your MVP cloud provider
-# to provide the following two ids which are uuid's:
+# If you are going to send data to an MVP cloud then the ask your MVP cloud provider
+# to provide the following two ids:
 mqtt_client_id = ""
-
-# TBD - need to rename mqtt_sys_id to system_id.  This parameter is not specific to mqtt.
-mqtt_sys_id = ""
 
 # Note that the MVP only supports TLS (aka SSL) communication to the MQTT broker .  If your broker
 # does not support HTTPS then it can't be used with the MVP.
 #
 mqtt_url = ""
-mqtt_port = 0 
+mqtt_port = 8883
 
 # MQTT account credentials -> username and password
 # The MVP client needs to know the username and password of the MQTT broker to which the client 
@@ -52,43 +49,76 @@ encrypted_mqtt_password = ""
 #
 light_controller_program = (('on', '2:28 PM'), ('off', '2:29 PM'))
 
-# ####### Fan Controller #########
+# ######## Fan Controller #########
 # Speciy the target max chamber air temperature in Celsius.
 # The fan will be turned on when the temperature exceeds this value.
 #
 max_air_temperature = 30
 
 # ######## Camera Controller #########
-# You must include a slash after the last subdirectory - TBD: clean this up.
-# TBD: Need to figure out how to create the picture directory for newly created 
-#      instances of the MVP.
-#
+# You must include a slash after the last subdirectory - TBD: clean this up. 
 image_directory = '/home/pi/openag-mvp/pictures/'
-camera_controller_program = ('hourly', 10)
+camera_controller_program = ('hourly', 0)
 copy_current_image = True
 current_image_copy_location = '/home/pi/MVP/web/image.jpg'
 
+# ######## Device Ids ############
+# Use the settings below to define the system composition. Once things are working then
+# figure out a better way to configure systems.
+#
+#
+#
+organization_guid = ""
+
+system = {'name':'',
+          'device_id':''}
+
+device_1 = {'name':'si7021',
+            'device_id':'',
+            'subject_location':'chamber',
+            'subject_location_id':'',
+            'attributes':[{'name':'temperature', 'id':'b794687a-9970-4d12-a890-3aba98332ab8'},
+                          {'name':'humidity', 'id':'3c36bae6-ec85-4898-9ab4-187dcd8c91f2'}]}
+
+device_2 = {'name':'ds18b20',
+            'device_id':'',
+            'subject_location':'resevoir',
+            'subject_location_id':'',
+            'attributes': [{'name':"temperature", 'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
+
+system_composition = [system, device_1, device_2]
+
+# ######## Local Data Logging ########
+# Specify the sensor sampling interval in seconds.
+local_data_logger_sample_interval = 5
+
 # ######## Web Charting Controller #########
 # charting_interval (in minutes) sets the refresh time for the web charts.
-charting_interval = 15
+# TBD: The chart configuration data accesses device data, so will need
+# to create a compiler to create configuration files. 
+#
+charting_interval = 10
 chart_output_folder = '/home/pi/MVP/web/'
 couchdb_location_url = 'http://127.0.0.1:5984/mvp_sensor_data/'
 
-temp_chart = {'couch_key_name':'temperature',
+temp_chart = {'device':device_1,
+              'attribute_index':0,
               'chart_title':'Air Temperature',
               'y_axis_title':'Degrees C',
               'x_axis_title':'Timestamp (hover over to display date)',
               'data_stream_name':'Air Temp.',
               'chart_file_name':'temp_chart.svg'}
 
-humidity_chart = {'couch_key_name':'humidity',
+humidity_chart = {'device':device_1,
+              'attribute_index':1,
               'chart_title':'Humidity',
               'y_axis_title':'Percent',
               'x_axis_title':'Timestamp (hover over to display date)',
               'data_stream_name':'Humidity',
               'chart_file_name':'humidity_chart.svg'}
 
-water_temp_chart = {'couch_key_name':'water temperature',
+water_temp_chart = {'device':device_2,
+              'attribute_index':0,
               'chart_title':'Water Temperature',
               'y_axis_title':'Degrees C',
               'x_axis_title':'Timestamp (hover over to display date)',
@@ -97,29 +127,3 @@ water_temp_chart = {'couch_key_name':'water temperature',
 
 # Need a way to dynamically create this setting when the user is setting up their MVP
 chart_list = (temp_chart, humidity_chart, water_temp_chart)
-
-# Use the settings below to define the system composition. Once things are working then
-# figure out a better way to configure systems.
-#   
-# The following settings define the system. Need to come up with a way for this stuff to be autogenerated
-# from the cloud db.
-
-organization_guid = ""
-
-system = {'name':'germinator',
-          'device_id':'4399c2d8-ed0d-4feb-97fa-eb0dc869bf38'}
-
-device_1 = {'name':'si7021',
-            'device_id':'c6bc257e-2d18-41f0-b9f4-d0ca1f1224df',
-            'subject_location':'chamber',
-            'subject_location_id':'c0b1d0dc-66a4-46da-8aec-cc308a3359a1',
-            'attributes':[{'name':'temperature', 'id':'b794687a-9970-4d12-a890-3aba98332ab8'},
-                          {'name':'humidity', 'id':'3c36bae6-ec85-4898-9ab4-187dcd8c91f2'}]}
-
-device_2 = {'name':'ds18b20',
-            'device_id':'f4682ae0-601b-402e-ba98-5aa1a46cb2b2',
-            'subject_location':'resevoir',
-            'subject_location_id':'309e865b-f996-44ba-8893-8d5ac3b2d747',
-            'attributes': [{'name':"temperature", 'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
-
-system_composition = [organization, system, device_1, device_2]

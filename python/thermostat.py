@@ -47,7 +47,9 @@ def adjustThermostat(thermostat_state, temp):
         currentFanOn = False
         #print("Fan Off")
 
-    print('{:%Y-%m-%d %H:%M:%S} Fan Controller: Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(datetime.utcnow(),\
-          thermostat_state['target_temp'], temp, fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
+    # if the fan state has change then log a message. 
+    if thermostat_state['fan_on'] != currentFanOn: 
+       print('{:%Y-%m-%d %H:%M:%S} Fan Controller: Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(\
+             datetime.now(), thermostat_state['target_temp'], temp, fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
 
     return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}

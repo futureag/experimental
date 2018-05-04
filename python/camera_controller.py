@@ -65,8 +65,8 @@ def start_camera_controller(mqtt_client):
             print('ERROR. fswebcam call failed with the following results:')
             print(picture_results)
 
-      print('{:%Y-%m-%d %H:%M:%S} Camera Controller: '.format(datetime.now())
-            + 'current hour: {}, '.format(this_instance.time().hour) 
-            + 'last picture taken during hour: {}'.format(current_state['hour_of_last_picture']))
+      #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: '.format(datetime.now())
+      #-       + 'current hour: {}, '.format(this_instance.time().hour) 
+      #-      + 'last picture taken during hour: {}'.format(current_state['hour_of_last_picture']))
 
       sleep(5)  

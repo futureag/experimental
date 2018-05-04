@@ -18,23 +18,24 @@ def start_sensor_data_logger(mqtt_client):
 
    while True:
 
+      date_time = datetime.datetime.utcnow()
+
       try:
-         date_time = datetime.datetime.utcnow()
          temp = si.getTempC()
-         logData("si7021_top", "Success", "temperature", "air", "{:+.1f}".format(temp), "celsius", '')
-         send_sensor_data_via_mqtt(device_1, mqtt_client, "si7021_top", "temperature", "air", 
+         logData("si7021", "Success", "temperature", "air", "{:+.1f}".format(temp), "celsius", '')
+         send_sensor_data_via_mqtt(device_1, mqtt_client, "si7021", "temperature", "air", 
                                    "{:+.1f}".format(temp), "celsius", date_time)
       except Exception as e:
-         logData("si7021_top", "Failure", "temperature", "air", '', "celsius", str(e))
+         logData("si7021", "Failure", "temperature", "air", '', "celsius", str(e))
 
       try:
          humid = si.getHumidity()
-         logData("si7021_top", "Success", "humidity", "air", "{:+.1f}".format(humid), 
+         logData("si7021", "Success", "humidity", "air", "{:+.1f}".format(humid), 
                  "percentage", '')
-         send_sensor_data_via_mqtt(device_1, mqtt_client, "si7021_top", "humidity", "air", 
+         send_sensor_data_via_mqtt(device_1, mqtt_client, "si7021", "humidity", "air", 
                                    "{:+.1f}".format(temp), "percentage", date_time)
       except Exception as e:
-         logData("si7921_top", "Failure", "humidity", "air", '', "percentage", str(e))
+         logData("si7021", "Failure", "humidity", "air", '', "percentage", str(e))
 
       try:
          ph = atlasPH().getPH()
@@ -46,11 +47,12 @@ def start_sensor_data_logger(mqtt_client):
 
       try:
          water_temp = ds18b20().getTempC()
-         logData("ds18b20_1", "Success", "temperature", "water", "{:+.1f}".format(water_temp), 
+         logData("ds18b20", "Success", "temperature", "water", "{:+.1f}".format(water_temp), 
                  "celsius", '')
-         send_sensor_data_via_mqtt(device_2, mqtt_client, "ds18b20_1", "temperature", "water", 
+         send_sensor_data_via_mqtt(device_2, mqtt_client, "ds18b20", "temperature", "water", 
                                    "{:+.1f}".format(temp), "celsius", date_time)
       except Exception as e:
-         logData("ds18b20_1", "Failure", "temperature", "water", '', "celsius", str(e))
+         logData("ds18b20", "Failure", "temperature", "water", '', "celsius", str(e))
       
-      time.sleep(5)
+      # sample every 15 minutes
+      time.sleep(900)
