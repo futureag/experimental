@@ -22,10 +22,9 @@ def get_passphrase():
    else:
       return None
 
-
 config_file_passphrase = get_passphrase()
 
-# Start the MQTT client thread if so configured.
+# Create and start the MQTT client thread if so configured.
 if enable_mqtt == True:
    result = start_mqtt_client_thread(config_file_passphrase, encrypted_mqtt_password)
    if result[0] == True:
@@ -34,8 +33,6 @@ if enable_mqtt == True:
    else:
       print('ERROR. Unable to start an MQTT client.')
       exit()
-
-# Start the fan controller
 
 # Create the light controller 
 t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client,))

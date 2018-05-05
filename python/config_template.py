@@ -88,9 +88,11 @@ device_2 = {'name':'ds18b20',
 
 system_composition = [system, device_1, device_2]
 
-# ######## Local Data Logging ########
+# ######## Data Logging ########
 # Specify the sensor sampling interval in seconds.
-local_data_logger_sample_interval = 5
+data_logger_sample_interval = 5
+log_data_locally = True
+log_data_via_mqtt = True
 
 # ######## Web Charting Controller #########
 # charting_interval (in minutes) sets the refresh time for the web charts.

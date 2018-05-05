@@ -7,10 +7,10 @@ from shutil import copyfile
 path.append('/opt/mvp/config')
 from config import image_directory, camera_controller_program, copy_current_image, current_image_copy_location
 
-def is_picture_minute(this_instance):
+def is_picture_minute(this_instant):
 
    if camera_controller_program[0] == 'hourly':
-      if this_instance.time().minute == camera_controller_program[1]:
+      if this_instant.time().minute == camera_controller_program[1]:
          return True
      
    return False
@@ -30,12 +30,12 @@ def start_camera_controller(mqtt_client):
 
       current_state = state
 
-      this_instance = datetime.now() 
+      this_instant = datetime.now() 
 
       if state['startup'] == True or \
-         ((state['hour_of_last_picture'] != this_instance.time().hour) and is_picture_minute(this_instance)):
+         ((state['hour_of_last_picture'] != this_instant.time().hour) and is_picture_minute(this_instant)):
 
-         #if state['hour_of_last_picture'] != this_instance.time().hour:
+         #if state['hour_of_last_picture'] != this_instant.time().hour:
 
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
          file_location = '{}{}'.format(image_directory, file_name) 
@@ -58,7 +58,7 @@ def start_camera_controller(mqtt_client):
                      datetime.now(), current_image_copy_location))
 
             # Update your current state
-            state['hour_of_last_picture'] = this_instance.time().hour
+            state['hour_of_last_picture'] = this_instant.time().hour
             state['startup'] = False
 
          except CalledProcessError as e:
@@ -66,7 +66,7 @@ def start_camera_controller(mqtt_client):
             print(picture_results)
 
       #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: '.format(datetime.now())
-      #-       + 'current hour: {}, '.format(this_instance.time().hour) 
+      #-       + 'current hour: {}, '.format(this_instant.time().hour) 
       #-      + 'last picture taken during hour: {}'.format(current_state['hour_of_last_picture']))
 
       sleep(5)  
