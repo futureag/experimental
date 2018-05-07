@@ -10,6 +10,13 @@ class ds18b20(object):
     def getTempC(self):
         return self.sensor.get_temperature()
 
+    def Get(self, attribute: str="temperature"):
+      if attribute == "temperature":
+         return self.sensor.get_temperature()
+      else:
+         print('ERROR in ds18b20. Unknown attribute: {}'.format(attribute))
+         return '0'
+
     def test(self):
         t = self.getTemp()
         'Self test of the object'

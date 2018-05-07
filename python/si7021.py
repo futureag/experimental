@@ -49,6 +49,15 @@ class si7021(object):
         temp_c = 175.72/65536.0*temp_c-46.85
         return temp_c
 
+    def Get(self, attribute: str) -> str:
+      if attribute == "temperature":
+         return self.getTempC()
+      if attribute == 'humidity':
+         return self.getHumidity()
+
+      print('ERROR in si7021. Unknown attribute: {}'.format(attribute))
+      return '0'
+
     def test(self):
         'Self test of the object'
         print('\n*** Test SI7021 ***\n')

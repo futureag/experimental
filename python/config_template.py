@@ -9,6 +9,8 @@
 #    create and store the file in the place that you designate.
 #
 
+organization_guid = ""
+
 # ########### MQTT Settings #############
 enable_mqtt = True
 mqtt_publish_sensor_readings = True 
@@ -41,6 +43,7 @@ mqtt_port = 8883
 mqtt_username = ""
 encrypted_mqtt_password = "" 
 
+
 # ######## Light Controller #########
 #
 # Specify as many on/off times as you like.  Resolution is 1 minute so all light events
@@ -68,31 +71,37 @@ current_image_copy_location = '/home/pi/MVP/web/image.jpg'
 #
 #
 #
-organization_guid = ""
 
-system = {'name':'',
-          'device_id':''}
+from si7021 import si7021
+from ds18b20 import ds18b20
+
+system = {'name':'germinator',
+          'device_id':'4399c2d8-ed0d-4feb-97fa-eb0dc869bf38'}
 
 device_1 = {'name':'si7021',
-            'device_id':'',
+            'instance':si7021(),
+            'device_id':'c6bc257e-2d18-41f0-b9f4-d0ca1f1224df',
             'subject_location':'chamber',
-            'subject_location_id':'',
-            'attributes':[{'name':'temperature', 'id':'b794687a-9970-4d12-a890-3aba98332ab8'},
-                          {'name':'humidity', 'id':'3c36bae6-ec85-4898-9ab4-187dcd8c91f2'}]}
+            'subject_location_id':'c0b1d0dc-66a4-46da-8aec-cc308a3359a1',
+            'attributes':[{'name':'temperature', 'subject':'air', 'units': 'celsius',
+                           'id':'b794687a-9970-4d12-a890-3aba98332ab8'},
+                          {'name':'humidity', 'subject':'air', 'units':'percentage', 
+                           'id':'3c36bae6-ec85-4898-9ab4-187dcd8c91f2'}]}
 
 device_2 = {'name':'ds18b20',
-            'device_id':'',
+            'instance':ds18b20(),
+            'device_id':'f4682ae0-601b-402e-ba98-5aa1a46cb2b2',
             'subject_location':'resevoir',
-            'subject_location_id':'',
-            'attributes': [{'name':"temperature", 'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
-
-system_composition = [system, device_1, device_2]
+            'subject_location_id':'309e865b-f996-44ba-8893-8d5ac3b2d747',
+            'attributes': [{'name':'temperature', 'subject':'air', 'units':'celsius',
+                            'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
 
 # ######## Data Logging ########
 # Specify the sensor sampling interval in seconds.
 data_logger_sample_interval = 5
 log_data_locally = True
 log_data_via_mqtt = True
+logging_devices = (device_1, device_2)
 
 # ######## Web Charting Controller #########
 # charting_interval (in minutes) sets the refresh time for the web charts.
@@ -127,5 +136,5 @@ water_temp_chart = {'device':device_2,
               'data_stream_name':'Water Temp',
               'chart_file_name':'water_temp_chart.svg'}
 
-# Need a way to dynamically create this setting when the user is setting up their MVP
+# TBD: Need a way to dynamically create this setting when the user is setting up their MVP
 chart_list = (temp_chart, humidity_chart, water_temp_chart)
