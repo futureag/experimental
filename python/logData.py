@@ -2,33 +2,45 @@ from sys import path
 from datetime import tzinfo, datetime
 import requests
 import json
-"""
-from send_mqtt_data import send_sensor_data_via_mqtt
+from logging import getLogger
 
 path.append('/opt/mvp/config')
-from config import enable_mqtt, mqtt_publish_sensor_readings 
-"""
+from config import log_data_to_local_couchdb, log_data_to_local_file
 
-#Output to file and MQTT
+logger = getLogger('data logger')
+
+def need_to_log_locally():
+   return log_data_to_local_couchdb or log_data_to_local_file
+
+
+# Log data to couchdb and/or file or neither.
 #
 def logData(sensor_name, status, attribute, subject, value, units, comment):
 
-    # Need to factor out the next call.    
-    timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
-    logFile(timestamp, sensor_name, status, attribute, value, comment)
-    logDB(timestamp, sensor_name, status, attribute, value, comment)
+   # Need to factor out the next call.    
+   timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
 
-    #- if status == "Success" and enable_mqtt == True and mqtt_publish_sensor_readings == True:
-    #-   send_sensor_data_via_mqtt(device, mqtt, sensor_name, attribute, subject, value, units, date_time)
-    
+   if log_data_to_local_file == True:
+      logFile(timestamp, sensor_name, status, attribute, value, comment)
+
+   if log_data_to_local_couchdb == True:
+      logDB(timestamp, sensor_name, status, attribute, value, comment)
+
+
 def logFile(timestamp, name, status, attribute, value, comment):
     f = open('/home/pi/MVP/data/data.txt', 'a')
-    s= timestamp + ' Local Data Logger: ' + name + ", " + status + ", " + attribute + ", " + value + "," + comment
-    print(s)
+    s = name + ", " + status + ", " + attribute + ", " + value + "," + comment
+    logger.info('file write: {}'.format(s))
+    #- print(s)
     f.write(s + "\n")
     f.close()
 
+
 def logDB(timestamp, name, status, attribute, value, comment):
+
+    s = name + ", " + status + ", " + attribute + ", " + value + "," + comment
+    logger.info('couchd db write: {}'.format(s))
+
     log_record = {'timestamp' : timestamp,
             'name' : name,
             'status' : status,
@@ -36,10 +48,7 @@ def logDB(timestamp, name, status, attribute, value, comment):
             'value' : value,
             'comment' : comment}
     json_data = json.dumps(log_record)
-    # print(json.dumps(log_record, indent=4, sort_keys=True))
+    #- print(json.dumps(log_record, indent=4, sort_keys=True))
     headers = {'content-type': 'application/json'}
     r = requests.post('http://localhost:5984/mvp_sensor_data', data = json_data, headers=headers)
-    #print(r.json())
-
-#Uncomment to test this function
-#logData(_si7021, _Success, _temperature, '27', '')    
+    #- print(r.json())

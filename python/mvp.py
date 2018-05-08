@@ -1,7 +1,8 @@
+import logging
 import sys
 import threading
 from subprocess import * 
-from mqtt_client import start_mqtt_client_thread
+from mqtt_client import start_mqtt_client
 from light_controller import start_light_controller
 from logSensors import start_sensor_data_logger
 from sys import *
@@ -24,30 +25,37 @@ def get_passphrase():
 
 config_file_passphrase = get_passphrase()
 
+# Move the logging configuration to a dictionary stored in a configuration file.
+logging.basicConfig(filename='mvp.log', filemode='w', level=logging.INFO, format='%(asctime)s %(name)s  %(levelname)s %(message)s')
+
+app_state = {'stop': False}
+
 # Create and start the MQTT client thread if so configured.
+# Note that the paho mqtt client has the ability to spawn it's own thread.
+# Communication with this thread is done via the the mqtt_client object.
 if enable_mqtt == True:
-   result = start_mqtt_client_thread(config_file_passphrase, encrypted_mqtt_password)
+   result = start_mqtt_client(config_file_passphrase, encrypted_mqtt_password)
    if result[0] == True:
       mqtt_client = result[1]
-      t1 = result[2]
    else:
-      print('ERROR. Unable to start an MQTT client.')
+      #- print('ERROR. Unable to start an MQTT client.')
+      logging.error('Unable to start an MQTT client.')
       exit()
 
 # Create the light controller 
-t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client,))
+t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client, app_state))
 
 # Create the sensor data logger
-t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client,))
+t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client, app_state))
 
 # Create the fan controller (aka thermostat)
-t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(mqtt_client,))
+t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(mqtt_client, app_state))
 
 # Create the camera controller
-t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(mqtt_client,))
+t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(mqtt_client, app_state))
 
 # Create the website chart geneator
-t6 = threading.Thread(target=start_web_chart_controller, name="web_chart_controller")
+t6 = threading.Thread(target=start_web_chart_controller, name="web_chart_controller", args=(app_state,))
 
 # Start threads t2 - t6
 t2.start()
@@ -56,10 +64,15 @@ t4.start()
 t5.start()
 t6.start()
 
-# Wait till all the threads finish
-if enable_mqtt == True:
-   t1.join()
+while True:
+   try:
+      pass
+   except:
+      app_state['stop'] = True
+      break
 
+# Wait for threads to complete.
+#
 t2.join()
 t3.join()
 t4.join()

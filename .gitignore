@@ -1,4 +1,5 @@
 *.pyc
 *.swp
+*.log
 __pycache__/
 pictures

@@ -3,9 +3,12 @@ from time import sleep
 from subprocess import check_call, CalledProcessError
 from sys import path
 from shutil import copyfile
+from logging import getLogger
 
 path.append('/opt/mvp/config')
 from config import image_directory, camera_controller_program, copy_current_image, current_image_copy_location
+
+logger = getLogger('camera')
 
 def is_picture_minute(this_instant):
 
@@ -16,17 +19,13 @@ def is_picture_minute(this_instant):
    return False
 
 
-def start_camera_controller(mqtt_client):
+def start_camera_controller(mqtt_client, app_state):
 
-   #- this_hour = datetime.now().time().hour
-   #- if  this_hour == 0:
-   #-    initial_hour = 23
-   #- else:
-   #-    initial_hour = this_hour - 1
+   logger.info('Starting camera controller.')
 
    state = {'hour_of_last_picture':None, 'startup':True}
 
-   while True:
+   while not app_state['stop']:
 
       current_state = state
 
@@ -34,8 +33,6 @@ def start_camera_controller(mqtt_client):
 
       if state['startup'] == True or \
          ((state['hour_of_last_picture'] != this_instant.time().hour) and is_picture_minute(this_instant)):
-
-         #if state['hour_of_last_picture'] != this_instant.time().hour:
 
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
          file_location = '{}{}'.format(image_directory, file_name) 
@@ -48,25 +45,24 @@ def start_camera_controller(mqtt_client):
             # Figure out if you can suppress fswebcam's output or take the picture using native python code.
             picture_results = check_call(camera_shell_command, shell=True)
 
-            print('{:%Y-%m-%d %H:%M:%S} Camera Controller: Created image file at {}'.format(\
-                  datetime.now(), file_location))
+            logger.info('Created image file at {}'.format(file_location))
+            #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: Created image file at {}'.format(\
+            #-      datetime.now(), file_location))
 
             # Copy the picture to the web directory
             if copy_current_image == True:
                copyfile(file_location, current_image_copy_location)
-               print('{:%Y-%m-%d %H:%M:%S} Camera Controller: Copied latest image file to {}'.format(\
-                     datetime.now(), current_image_copy_location))
+               logger.info('Copied latest image file to {}'.format(current_image_copy_location))
+               #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: Copied latest image file to {}'.format(\
+               #-      datetime.now(), current_image_copy_location))
 
             # Update your current state
             state['hour_of_last_picture'] = this_instant.time().hour
             state['startup'] = False
 
          except CalledProcessError as e:
-            print('ERROR. fswebcam call failed with the following results:')
-            print(picture_results)
+            logger.error('fswebcam call failed with the following results:'.format(picture_results))
+            #- print('ERROR. fswebcam call failed with the following results:')
+            #- print(picture_results)
 
-      #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: '.format(datetime.now())
-      #-       + 'current hour: {}, '.format(this_instant.time().hour) 
-      #-      + 'last picture taken during hour: {}'.format(current_state['hour_of_last_picture']))
-
-      sleep(5)  
+      sleep(1)  

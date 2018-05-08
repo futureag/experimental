@@ -51,6 +51,11 @@ encrypted_mqtt_password = ""
 # MVP is running on.
 #
 light_controller_program = (('on', '2:28 PM'), ('off', '2:29 PM'))
+#TBD Need to enable MQTT logging.
+log_light_state_vai_mqtt = False
+log_light_state_to_local_couchdb = True
+log_light_state_to_local_file = True
+
 
 # ######## Fan Controller #########
 # Speciy the target max chamber air temperature in Celsius.
@@ -96,12 +101,19 @@ device_2 = {'name':'ds18b20',
             'attributes': [{'name':'temperature', 'subject':'air', 'units':'celsius',
                             'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
 
+
 # ######## Data Logging ########
 # Specify the sensor sampling interval in seconds.
+#
 data_logger_sample_interval = 5
-log_data_locally = True
-log_data_via_mqtt = True
 logging_devices = (device_1, device_2)
+
+# Specify logging of data (e.g. sensors, actuator settings etc.)
+#
+log_data_to_local_couchdb = True
+log_data_to_local_file = True
+log_data_via_mqtt = True
+
 
 # ######## Web Charting Controller #########
 # charting_interval (in minutes) sets the refresh time for the web charts.

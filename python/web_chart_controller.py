@@ -1,24 +1,21 @@
-"""
-# Render the data for the website
-#*/10 * * * * $MVP_SCRIPTS/render.sh >> $CRON_LOG 2>&1
-"""
-
 from subprocess import check_call, CalledProcessError
 from datetime import datetime
 from time import sleep, time
 from sys import path
 from generate_chart import generate_chart
+from logging import getLogger
 
 path.append('/opt/mvp/config')
 from config import charting_interval, chart_output_folder, couchdb_location_url, chart_list
 
+logger = getLogger('web chart generator')
 
-def start_web_chart_controller():
+def start_web_chart_controller(app_state):
 
    # Set the intial timestamp to 0 thus forcing a web chart generation at start up.
    state = {'last_charting_ts':0, 'last_chart_generation_date':None}
 
-   while True:
+   while not app_state['stop']:
 
       this_ts = time()
 
@@ -32,25 +29,18 @@ def start_web_chart_controller():
 
          try:
             #TBD - At some point upgrade to the new Python (3.5 or newer) and use the .run commmand.
-            #- charting_results = check_call(charting_shell_command, shell=True)
 
             for chart_info in chart_list:
 
                generate_chart(couchdb_location_url, chart_output_folder, chart_info)
-               #-getTempChart('/home/pi/MVP/web/temp_chart.svg')
 
             state['last_charting_ts'] = this_ts
             state['last_chart_generation_date'] = datetime.now()
 
-            print('{:%Y-%m-%d %H:%M:%S} Web Chart Generator: created charts at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
-                  state['last_chart_generation_date']))
+            logger.info('Created web charts at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
+                        state['last_chart_generation_date']))
 
          except CalledProcessError as e:
-            print('ERROR. render.sh call failed with the following results:')
-            #print(charting_results)
+            logger.error('render.sh call failed with the following results:{}'.format(charting_results))
 
-      #else:
-      #   print('{:%Y-%m-%d %H:%M:%S} Web Chart Generator: last charts generated at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
-      #          state['last_chart_generation_date']))
-
-      sleep(5)
+      sleep(1)

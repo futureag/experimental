@@ -9,10 +9,7 @@ path.append('/opt/mvp/config')
 from config import *
 
 def on_connect(client, userdata, flags, rc):
-   #- print("############ MQTT client Connected: #################" + str(rc))
    print('{:%Y-%m-%d %H:%M:%S} MQTT client Connected with return code: {}'.format(datetime.utcnow(), str(rc)))
-   # Subscribe to everthing.
-   # client.subscribe("#", 2)
 
 def on_message(client, userdata, message):
    print("messaged")
@@ -20,25 +17,17 @@ def on_message(client, userdata, message):
 def on_publish(mqttc, obj, mid):
    print("published")
 
-def start_mqtt_client(client, mqtt_password):
+def on_disconnect(mqtt, userdata, rc):
+   print('WARNING: MQTT Disconnected at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
 
-   # Configure the client
-   client.on_connect = on_connect
-   client.on_message = on_message
+def on_log(client, userdata, level, buf):
+   print('WARNING: MQTT log at {:%Y-%m-%d %H:%M:%S}:{}'.format(datetime.now(), buf))
 
-   client.tls_set()
 
-   client.username_pw_set(mqtt_username, mqtt_password)
-
-   client.connect(mqtt_url, mqtt_port, 60)
-
-   # Start the MQTT client
-   client.loop_forever()
-
-# TBD - Need to figure out how to securely keep the config_file_passphrase and also to time it out
+# TBD - Need to figure out how to time it out
 # after a configurable period of time.
 #
-def start_mqtt_client_thread(config_file_passphrase, encrypted_mqtt_password):
+def start_mqtt_client(config_file_passphrase, encrypted_mqtt_password):
 
    # call open SSL to decrypt the encrypted MQTT password.
    open_ssl_decrypt_command = 'echo "' + encrypted_mqtt_password + '" | openssl enc -d -k "'\
@@ -55,13 +44,22 @@ def start_mqtt_client_thread(config_file_passphrase, encrypted_mqtt_password):
 
    mqtt_client = paho.mqtt.client.Client(mqtt_client_id)
 
-   # Create the MQTT client thread 
-   #
-   t1 = threading.Thread(target=start_mqtt_client, name="mqtt_client", args=(mqtt_client, mqtt_password))
-   
+   # Configure the client
+   mqtt_client.on_connect = on_connect
+   mqtt_client.on_message = on_message
+   #mqtt_client.on_publish = on_publish
+   mqtt_client.on_disconnect = on_disconnect
+   #mqtt_client.on_log = on_log
+
+   mqtt_client.tls_set()
+
+   mqtt_client.username_pw_set(mqtt_username, mqtt_password)
+
+   mqtt_client.connect(mqtt_url, mqtt_port, 60)
+
    # Start the MQTT client
-   t1.start()
+   mqtt_client.loop_start()
+
    # TBD - add code here to wait for the mqtt connection to complete before proceeding.
 
-   return [True, mqtt_client, t1]
-
+   return [True, mqtt_client]
