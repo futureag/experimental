@@ -61,7 +61,6 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s:%(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.info('Starting mvp system')
-print('starting mvp system')
 
 app_state = {'stop': False}
 
