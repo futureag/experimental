@@ -2,17 +2,18 @@
 # Fan actuator controlled by thermometer
 
 from thermostat import adjustThermostat
-from si7021 import *
+# TBD - Factor out the reference to the si7021. The code should get it via the configuration file device list.
+from devices.si7021 import *
 from logData import logData
 from time import sleep
 from datetime import datetime
 import sys
 from logging import getLogger
 
-sys.path.append('/opt/mvp/config')
+#- sys.path.append('/opt/mvp/config')
 from config import max_air_temperature 
 
-logger = getLogger('fan controller')
+logger = getLogger('mvp.' + __name__)
 
 def get_target_temp():
    return max_air_temperature

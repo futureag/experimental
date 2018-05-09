@@ -2,18 +2,18 @@
 from sys import path
 import time
 import datetime
-from si7021 import *
+#- from si7021 import *
 from logData import logData, need_to_log_locally
-from atlasPH import *
-from ds18b20 import *
+#- from atlasPH import *
+#- from ds18b20 import *
 from send_mqtt_data import send_sensor_data_via_mqtt
 from logging import getLogger
 
-path.append('/opt/mvp/config')
+#-path.append('/opt/mvp/config')
 from config import device_1, device_2, data_logger_sample_interval, logging_devices, log_data_to_local_file,\
                    log_data_to_local_couchdb, log_data_via_mqtt
 
-logger = getLogger('sensor controller')
+logger = getLogger('mvp.' + __name__)
 
 # Set state so that a sample is taken on startup.
 #
@@ -22,10 +22,8 @@ state = {'next_sample_time':datetime.datetime.now().time(), 'sample_taken':False
 def time_to_sample():
 
    if data_logger_sample_interval <= 0 or data_logger_sample_interval > 86400:
-      logger.info('The data_logger_sample_interval must be '
+      logger.error('The data_logger_sample_interval must be '
                   + 'set to a value between 1 and 86400. 86400 seconds is 24 hours.')
-      #- print('{:%Y-%m-%d %H:%M:%S} ERROR. The data_logger_sample_interval must be '.format(datetime.datetime.now())
-      #-      + 'set to a value between 1 and 86400. 86400 seconds is 24 hours.')
       return False
 
    global state

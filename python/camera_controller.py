@@ -5,10 +5,10 @@ from sys import path
 from shutil import copyfile
 from logging import getLogger
 
-path.append('/opt/mvp/config')
+#- path.append('/opt/mvp/config')
 from config import image_directory, camera_controller_program, copy_current_image, current_image_copy_location
 
-logger = getLogger('camera')
+logger = getLogger('mvp.' + __name__)
 
 def is_picture_minute(this_instant):
 

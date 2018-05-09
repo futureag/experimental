@@ -1,5 +1,28 @@
-import logging
+# This module is the main program.
+#
+# Run this program in the directory where it resides with the following command: python3 mvp.py
+#
+# It spawns the following threads:
+# MQTT Client
+# Light Controller
+# Sensor Data Logger
+# Fan Controller
+# Camera Controller
+# Website Chart Controller 
+#
+# It is assumed that mvp.py is located in a directory that contains code and data organized identical to the way
+# it is stored in github (https://github.com/ferguman/openag-mvp)
+# 
+# Tell the python interpretter where to look for various files relative to the current working directory.
+import os
 import sys
+sys.path.append(os.getcwd() + '/python')           #All the applications python code is located in the python directory.
+sys.path.append(os.getcwd() + '/config')           #The applications configuration file is located here.
+
+# Ok let's get started!
+#
+import logging
+from logging.handlers import RotatingFileHandler
 import threading
 from subprocess import * 
 from mqtt_client import start_mqtt_client
@@ -11,7 +34,6 @@ from adjustThermostat import start_fan_controller
 from camera_controller import start_camera_controller
 from web_chart_controller import start_web_chart_controller
 
-sys.path.append('/opt/mvp/config')
 from config import *
 
 def get_passphrase():
@@ -25,8 +47,21 @@ def get_passphrase():
 
 config_file_passphrase = get_passphrase()
 
-# Move the logging configuration to a dictionary stored in a configuration file.
-logging.basicConfig(filename='mvp.log', filemode='w', level=logging.INFO, format='%(asctime)s %(name)s  %(levelname)s %(message)s')
+# TBD:  Move the logging configuration to a dictionary stored in a configuration file.
+# On linux use tail -F (translates as tail --follow=name --retry) to follow the 
+# rotating log. tail -f stops following when the log gets rotated out from under it.
+#
+# This logger currenlty rotates based upon file size. Python also supports timed based 
+# rotation.
+#
+logger = logging.getLogger('mvp')
+logger.setLevel(logging.INFO)
+handler = RotatingFileHandler(os.getcwd() + '/logs/mvp.log', maxBytes=10*1000*1000, backupCount=5)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s:%(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.info('Starting mvp system')
+print('starting mvp system')
 
 app_state = {'stop': False}
 
@@ -39,7 +74,7 @@ if enable_mqtt == True:
       mqtt_client = result[1]
    else:
       #- print('ERROR. Unable to start an MQTT client.')
-      logging.error('Unable to start an MQTT client.')
+      logger.error('Unable to start an MQTT client.')
       exit()
 
 # Create the light controller 

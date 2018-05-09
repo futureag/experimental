@@ -9,7 +9,7 @@ from logging import getLogger
 #Fan is assumed to be wired to Pin 33 (GPIO 13)
 #Pin 30 may control a relay or be a transistor switch, assumes HIGH means ON
 
-logger = getLogger('fan controller')
+logger = getLogger('mvp.' + __name__)
 
 def fan_state(on_flag):
 

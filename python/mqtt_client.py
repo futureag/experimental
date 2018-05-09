@@ -5,7 +5,7 @@ from sys import path
 import paho.mqtt.client as mqtt
 from datetime import datetime
 
-path.append('/opt/mvp/config')
+#- path.append('/opt/mvp/config')
 from config import *
 
 def on_connect(client, userdata, flags, rc):

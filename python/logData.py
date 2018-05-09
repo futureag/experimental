@@ -4,10 +4,10 @@ import requests
 import json
 from logging import getLogger
 
-path.append('/opt/mvp/config')
+#- path.append('/opt/mvp/config')
 from config import log_data_to_local_couchdb, log_data_to_local_file
 
-logger = getLogger('data logger')
+logger = getLogger('mvp.' + __name__)
 
 def need_to_log_locally():
    return log_data_to_local_couchdb or log_data_to_local_file

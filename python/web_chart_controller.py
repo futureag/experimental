@@ -5,10 +5,10 @@ from sys import path
 from generate_chart import generate_chart
 from logging import getLogger
 
-path.append('/opt/mvp/config')
+#- path.append('/opt/mvp/config')
 from config import charting_interval, chart_output_folder, couchdb_location_url, chart_list
 
-logger = getLogger('web chart generator')
+logger = getLogger('mvp.' + __name__)
 
 def start_web_chart_controller(app_state):
 

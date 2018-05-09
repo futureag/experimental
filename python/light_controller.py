@@ -8,10 +8,10 @@ from datetime import datetime
 import sys
 from logging import getLogger
 
-sys.path.append('/opt/mvp/config')
+#- sys.path.append('/opt/mvp/config')
 from config import light_controller_program, log_light_state_to_local_couchdb, log_light_state_to_local_file
 
-logger = getLogger('light_controller')
+logger = getLogger('mvp.' + __name__)
 
 def log_lights(state: str):
 
