@@ -34,7 +34,7 @@ from adjustThermostat import start_fan_controller
 from camera_controller import start_camera_controller
 from web_chart_controller import start_web_chart_controller
 
-from config import *
+from config import device_name, enable_mqtt, encrypted_mqtt_password
 
 def get_passphrase():
 
@@ -100,7 +100,19 @@ t6.start()
 
 while True:
    try:
-      pass
+      # TBD: Need to sanitize the name to guard against shell attack.
+      print('Enter: (help) to see a list of available commands.')
+      cmd = input(device_name + ':')
+      if cmd == '(help)':
+         print('(help) -> displays this help message./n'
+             + '(exit) -> exits this program.')
+      if cmd == '(exit)':
+         app_state['stop'] = True
+         print('shutting down, please wait a few secconds.')
+         sleep(2)
+         break
+      if cmd != '(help)' or cmd != '(exit)':
+         print('unknown command. Enter: (help) to see a list of available commands.')
    except:
       app_state['stop'] = True
       break

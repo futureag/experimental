@@ -11,6 +11,10 @@
 
 organization_guid = ""
 
+# You can give your device a custom name. The name will used at terminal prompts and other
+# places where it seems useful to display the name of this device.  
+device_name = 'mvp'
+
 # ########### MQTT Settings #############
 enable_mqtt = True
 mqtt_publish_sensor_readings = True 

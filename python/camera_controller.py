@@ -37,7 +37,9 @@ def start_camera_controller(mqtt_client, app_state):
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
          file_location = '{}{}'.format(image_directory, file_name) 
 
-         camera_shell_command = 'fswebcam -r 1280x720 --no-banner {}'.format(file_location)
+         # TBD - Need to figure out where to store fswebcam output. Right now it goes to syslog.  Think
+         # about a better way to integrate the logging into the mvp's logging infrastructure.
+         camera_shell_command = 'fswebcam -r 1280x720 --no-banner --log syslog {}'.format(file_location)
 
          try:
             #TBD - At some point upgrade to the new Python (3.5 or newer) and use the .run commmand.

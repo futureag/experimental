@@ -4,24 +4,28 @@ import paho.mqtt.client
 from sys import path
 import paho.mqtt.client as mqtt
 from datetime import datetime
+from logging import getLogger
 
-#- path.append('/opt/mvp/config')
 from config import *
 
+logger = getLogger('mvp' + '.' + __name__)
+
 def on_connect(client, userdata, flags, rc):
-   print('{:%Y-%m-%d %H:%M:%S} MQTT client Connected with return code: {}'.format(datetime.utcnow(), str(rc)))
+   #- print('{:%Y-%m-%d %H:%M:%S} MQTT client Connected with return code: {}'.format(datetime.utcnow(), str(rc)))
+   # TBD instead of displaying the return code (e.g. 0) display the meaning of the code (e.g. success).
+   logger.info('MQTT client Connected with return code: {}'.format(str(rc)))
 
 def on_message(client, userdata, message):
-   print("messaged")
+   logger.error('MQTT message received. This version of the mvp code does not support incoming MQTT messages.')
 
 def on_publish(mqttc, obj, mid):
-   print("published")
+   logger.debug('MQTT message published, mid={}'.format(mid))
 
 def on_disconnect(mqtt, userdata, rc):
-   print('WARNING: MQTT Disconnected at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+   logger.warning('MQTT Disconnected.')
 
-def on_log(client, userdata, level, buf):
-   print('WARNING: MQTT log at {:%Y-%m-%d %H:%M:%S}:{}'.format(datetime.now(), buf))
+#- def on_log(client, userdata, level, buf):
+#-   print('WARNING: MQTT log at {:%Y-%m-%d %H:%M:%S}:{}'.format(datetime.now(), buf))
 
 
 # TBD - Need to figure out how to time it out
@@ -39,17 +43,19 @@ def start_mqtt_client(config_file_passphrase, encrypted_mqtt_password):
       # print("MQTT password: " + mqtt_password + "\n") 
       mqtt_password = password_decrypt_results.decode("utf-8")[0:-1]
    except CalledProcessError as e:
-      print("Execution of openssl failed with return code:{}.\n".format(e.returncode))
+      logger.error('Execution of openssl failed with return code:{}.\n'.format(e.returncode))
       return [False]
 
    mqtt_client = paho.mqtt.client.Client(mqtt_client_id)
 
-   # Configure the client
+   # Configure the client callback functions
    mqtt_client.on_connect = on_connect
    mqtt_client.on_message = on_message
-   #mqtt_client.on_publish = on_publish
+   mqtt_client.on_publish = on_publish
    mqtt_client.on_disconnect = on_disconnect
-   #mqtt_client.on_log = on_log
+   #- mqtt_client.on_log = on_log
+
+   mqtt_client.enable_logger(logger)
 
    mqtt_client.tls_set()
 
