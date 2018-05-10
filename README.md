@@ -2,17 +2,20 @@
 
 This is a fork of the [MVP II](https://github.com/webbhm/OpenAg-MVP-II).
 
-Many thanks to the folks who created the MVP II project.  On the shoulders of giants!
+It maintains the same funcionality as the MVP and adds some additional features. Many thanks to the team that created the MVP II code and hardware designs.
 
 ## Background 
 
-Code and instructions for building a 'brain' for a controlled environment hydroponics unit.
-It is mostly a collection of python code that runs on a Raspberry Pi (or similar device).  See the OpenAg [forums](http://forum.openag.media.mit.edu/) for discussion and issues:
+Python code that can be configured to peform the same functions as the MVP II.  The goals of the project are:
+
+- Target other grow enviroments and MVP modifications (e.g. add PH probe to an MVP system).   
+- Provide "easy button" functionality such as headless installation
+- Provide interoperability with a cloud based MVP learning environment that allows students and teachers to manage their MVPs from a cloud application.
 
 ## Changes made to this fork: 
 
-  - Persistent variables are now in a configuration file named config.py.
-  - Cron is not needed to operate the system.
+  - Configuration information is stored in a configuration file named config.py.
+  - cron is not needed to operate the system.
   - MQTT has been added.  This allows sensor readings to be sent to a cloud MQTT broker.
   - Data logging has been changed to use the Python logging facility
 
@@ -32,10 +35,11 @@ CouchDB is the main data storage system, and will provide easy replication to th
 ## Hardware Build:
 
 Refer to [MVP II](https://github.com/webbhm/OpenAg-MVP-II) for the details on the hardware build of an MVP. The goal of this project is break 
-dependencies between the brain code and the hardware that it will be used on.  Of course at the end of the day everything needs to be compatible bbut we hope to provide configuration flexiblity so that this code can be used with any grow environment that contains compatible sensors and
+dependencies between the brain code and the hardware that it will be used on.  Of course at the end of the day everything needs to be compatible but we hope to provide configuration flexiblity so that this code can be used with any grow environment that contains compatible sensors and
 actuators.
 
 ## Build Activities
+
 ### Assumptions:
 1. NOOB install of Raspbian on Raspberry Pi
 2. The Raspbian system has been configured 
@@ -48,7 +52,8 @@ actuators.
 TBD
 
 ## Future Development (in no priority):
-- GUI interface for setting persistent variables (could be local)
+- GUI interface for controlling/monitoring/configuring
 - Receive commands via MQTT
 - Send pictures to cloud (such as an Amazon S3 bucket)
 - Allow headless configuration of new mvp installations
+- Cloud backup of configuration file
