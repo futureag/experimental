@@ -38,20 +38,12 @@ Refer to [MVP II](https://github.com/webbhm/OpenAg-MVP-II) for the details on th
 dependencies between the brain code and the hardware that it will be used on.  Of course at the end of the day everything needs to be compatible but we hope to provide configuration flexiblity so that this code can be used with any grow environment that contains compatible sensors and
 actuators.
 
-## Build Activities
-
-### Assumptions:
-1. NOOB install of Raspbian on Raspberry Pi
-2. The Raspbian system has been configured 
-    - for localization (time, timezone)
-    - wifi is established and connected
-    - I2C has been enabled
-2. 32G SD card to hold data
-
 ### Software Build
-TBD
+
+[blossom build](https://github.com/ferguman/openag-mvp/wiki/Install-mvp-blossom)
 
 ## Future Development (in no priority):
+- Next release name: carrot
 - GUI interface for controlling/monitoring/configuring
 - Receive commands via MQTT
 - Send pictures to cloud (such as an Amazon S3 bucket)
