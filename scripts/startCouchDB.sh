@@ -1,3 +1,6 @@
+"""
+This stuff is no longer valid for version blossom and beyond.
+
 #!/bin/bash
 
 #Script to start up CouchDB

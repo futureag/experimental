@@ -1,8 +1,12 @@
 import smbus2, time
+from logging import getLogger
+import sys
 
 address = 0x40
 rh_no_hold = 0xf5
 previous_temp = 0xe0
+
+logger = getLogger('mvp.' + __name__)
 
 class si7021(object):
     def __init__(self):
@@ -50,13 +54,16 @@ class si7021(object):
         return temp_c
 
     def Get(self, attribute: str) -> str:
-      if attribute == "temperature":
-         return self.getTempC()
-      if attribute == 'humidity':
-         return self.getHumidity()
+       try:
+          if attribute == "temperature":
+             return self.getTempC()
+          if attribute == 'humidity':
+             return self.getHumidity()
 
-      print('ERROR in si7021. Unknown attribute: {}'.format(attribute))
-      return '0'
+          print('ERROR in si7021. Unknown attribute: {}'.format(attribute))
+          return '0'
+       except:
+          logger.error('Error in Get: {}'.format(sys.exc_info()[0]))
 
     def test(self):
         'Self test of the object'

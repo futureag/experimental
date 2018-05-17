@@ -19,6 +19,7 @@ import sys
 
 #All the applications python code is located in the python directory.
 sys.path.append(os.getcwd() + '/python')
+sys.path.append(os.getcwd() + '/python/devices')
 #The applications configuration file is located here.
 sys.path.append(os.getcwd() + '/config')           
 
@@ -78,18 +79,20 @@ if enable_mqtt == True:
       #- print('ERROR. Unable to start an MQTT client.')
       logger.error('Unable to start an MQTT client.')
       exit()
+else:
+    mqtt_client = None
 
 # Create the light controller 
-t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(mqtt_client, app_state))
+t2 = threading.Thread(target=start_light_controller, name="light_controller", args=(app_state, ))
 
 # Create the sensor data logger
 t3 = threading.Thread(target=start_sensor_data_logger, name="sensor_logger", args=(mqtt_client, app_state))
 
 # Create the fan controller (aka thermostat)
-t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(mqtt_client, app_state))
+t4 = threading.Thread(target=start_fan_controller, name="fan_controller", args=(app_state, ))
 
 # Create the camera controller
-t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(mqtt_client, app_state))
+t5 = threading.Thread(target=start_camera_controller, name="camera_controller", args=(app_state, ))
 
 # Create the website chart geneator
 t6 = threading.Thread(target=start_web_chart_controller, name="web_chart_controller", args=(app_state,))

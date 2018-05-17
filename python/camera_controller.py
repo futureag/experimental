@@ -1,12 +1,12 @@
+from os import getcwd
 from datetime import datetime
 from time import sleep
 from subprocess import check_call, CalledProcessError
-from sys import path
+from sys import path, exc_info
 from shutil import copyfile
 from logging import getLogger
 
-#- path.append('/opt/mvp/config')
-from config import image_directory, camera_controller_program, copy_current_image, current_image_copy_location
+from config import camera_controller_program, copy_current_image 
 
 logger = getLogger('mvp.' + __name__)
 
@@ -19,7 +19,7 @@ def is_picture_minute(this_instant):
    return False
 
 
-def start_camera_controller(mqtt_client, app_state):
+def start_camera_controller(app_state):
 
    logger.info('Starting camera controller.')
 
@@ -35,7 +35,7 @@ def start_camera_controller(mqtt_client, app_state):
          ((state['hour_of_last_picture'] != this_instant.time().hour) and is_picture_minute(this_instant)):
 
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
-         file_location = '{}{}'.format(image_directory, file_name) 
+         file_location = '{}{}'.format(getcwd() + '/pictures', file_name) 
 
          # TBD - Need to figure out where to store fswebcam output. Right now it goes to syslog.  Think
          # about a better way to integrate the logging into the mvp's logging infrastructure.
@@ -53,7 +53,7 @@ def start_camera_controller(mqtt_client, app_state):
 
             # Copy the picture to the web directory
             if copy_current_image == True:
-               copyfile(file_location, current_image_copy_location)
+               copyfile(file_location, os.getcwd() + '/web/image.jpg')
                logger.info('Copied latest image file to {}'.format(current_image_copy_location))
                #- print('{:%Y-%m-%d %H:%M:%S} Camera Controller: Copied latest image file to {}'.format(\
                #-      datetime.now(), current_image_copy_location))
@@ -63,7 +63,7 @@ def start_camera_controller(mqtt_client, app_state):
             state['startup'] = False
 
          except CalledProcessError as e:
-            logger.error('fswebcam call failed with the following results:'.format(picture_results))
+            logger.error('fswebcam call failed with the following results: {}'.format(exc_info()[0]))
             #- print('ERROR. fswebcam call failed with the following results:')
             #- print(picture_results)
 

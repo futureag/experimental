@@ -95,7 +95,7 @@ def run_controller(light_state, program):
    return {'error':False, 'light_on':light_state['light_on'], 'last_update':this_update_time}
  
 
-def start_light_controller(mqtt_client, app_state):
+def start_light_controller(app_state):
 
    logger.info('Starting light controller.')
 

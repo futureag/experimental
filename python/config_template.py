@@ -68,10 +68,10 @@ max_air_temperature = 30
 
 # ######## Camera Controller #########
 # You must include a slash after the last subdirectory - TBD: clean this up. 
-image_directory = '/home/pi/openag-mvp/pictures/'
+#- image_directory = '/home/pi/openag-mvp/pictures/'
 camera_controller_program = ('hourly', 0)
 copy_current_image = True
-current_image_copy_location = '/home/pi/MVP/web/image.jpg'
+# current_image_copy_location = '/home/pi/MVP/web/image.jpg'
 
 # ######## Device Ids ############
 # Use the settings below to define the system composition. Once things are working then

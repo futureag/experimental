@@ -1,4 +1,5 @@
-from sys import path
+#- from sys import path, exc_info
+import sys
 from datetime import tzinfo, datetime
 import requests
 import json
@@ -28,12 +29,17 @@ def logData(sensor_name, status, attribute, subject, value, units, comment):
 
 
 def logFile(timestamp, name, status, attribute, value, comment):
-    f = open('/home/pi/MVP/data/data.txt', 'a')
-    s = name + ", " + status + ", " + attribute + ", " + value + "," + comment
-    logger.info('file write: {}'.format(s))
-    #- print(s)
-    f.write(s + "\n")
-    f.close()
+    #TBD - Need to get this absolute path out of the code.
+    #TBD - Need to put a file rotation scheme in place for the text file.
+    try:
+        f = open('/home/pi/MVP/data/data.txt', 'a')
+        s = name + ", " + status + ", " + attribute + ", " + value + "," + comment
+        logger.info('file write: {}'.format(s))
+        #- print(s)
+        f.write(s + "\n")
+        f.close()
+    except:
+       logger.error('Error writing sensor data to data file: {}'.format(sys.exc_info()[0]))
 
 
 def logDB(timestamp, name, status, attribute, value, comment):

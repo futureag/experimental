@@ -9,8 +9,7 @@ from logData import logData, need_to_log_locally
 from send_mqtt_data import send_sensor_data_via_mqtt
 from logging import getLogger
 
-#-path.append('/opt/mvp/config')
-from config import device_1, device_2, data_logger_sample_interval, logging_devices, log_data_to_local_file,\
+from config import data_logger_sample_interval, logging_devices, log_data_to_local_file,\
                    log_data_to_local_couchdb, log_data_via_mqtt
 
 logger = getLogger('mvp.' + __name__)
@@ -38,7 +37,7 @@ def time_to_sample():
 
 def start_sensor_data_logger(mqtt_client, app_state):
 
-   logger.info('Starting sensor contorller.')
+   logger.info('Starting sensor controller.')
 
    while not app_state['stop']:
 

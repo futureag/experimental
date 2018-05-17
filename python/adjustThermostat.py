@@ -10,7 +10,6 @@ from datetime import datetime
 import sys
 from logging import getLogger
 
-#- sys.path.append('/opt/mvp/config')
 from config import max_air_temperature 
 
 logger = getLogger('mvp.' + __name__)
@@ -22,7 +21,7 @@ def get_target_temp():
 # TBD: Need to add an initializer that turns the fan off when the system powers up or reads it's state and updates the
 # the thermostat state with it.
 #
-def start_fan_controller(mqtt_client, app_state): 
+def start_fan_controller(app_state): 
 
    logger.info('starting fan controller')
 

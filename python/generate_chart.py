@@ -1,10 +1,14 @@
 import pygal
+from sys import exc_info
 import requests
 import json
+from logging import getLogger
 
 #Use a view in CouchDB to get the data
 #use the first key for attribute type
 #order descending so when limit the results will get the latest at the top
+
+logger = getLogger('mvp.' + __name__)
 
 def generate_chart(couchdb_url, output_path, chart_info):
 
@@ -26,19 +30,22 @@ def generate_chart(couchdb_url, output_path, chart_info):
     # printing on "normal" operation. What about long web requests???
     # print(r)
 
-    v_lst = [float(x['value']['value']) for x in r.json()['rows']]
-    v_lst.reverse()
-    ts_lst = [x['value']['timestamp'] for x in r.json()['rows']]
-    ts_lst.reverse()
+    try:
+        v_lst = [float(x['value']['value']) for x in r.json()['rows']]
+        v_lst.reverse()
+        ts_lst = [x['value']['timestamp'] for x in r.json()['rows']]
+        ts_lst.reverse()
 
-    line_chart = pygal.Line()
-    line_chart.title = chart_info['chart_title'] #'Temperature'
-    line_chart.y_title= chart_info['y_axis_title'] #"Degrees C"
-    line_chart.x_title= chart_info['x_axis_title'] #"Timestamp (hover over to display date)"
-    line_chart.x_labels = ts_lst
+        line_chart = pygal.Line()
+        line_chart.title = chart_info['chart_title'] #'Temperature'
+        line_chart.y_title= chart_info['y_axis_title'] #"Degrees C"
+        line_chart.x_title= chart_info['x_axis_title'] #"Timestamp (hover over to display date)"
+        line_chart.x_labels = ts_lst
 
-    #need to reverse order to go from earliest to latest
-    #v_lst.reverse()
+        #need to reverse order to go from earliest to latest
+        #v_lst.reverse()
 
-    line_chart.add(chart_info['data_stream_name'], v_lst)
-    line_chart.render_to_file(output_path + chart_info['chart_file_name'])
+        line_chart.add(chart_info['data_stream_name'], v_lst)
+        line_chart.render_to_file(output_path + chart_info['chart_file_name'])
+    except:
+        logger.error('Chart generation failed: {}'.format(exc_info()[0]))
