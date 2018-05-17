@@ -16,8 +16,11 @@
 # Tell the python interpretter where to look for various files relative to the current working directory.
 import os
 import sys
-sys.path.append(os.getcwd() + '/python')           #All the applications python code is located in the python directory.
-sys.path.append(os.getcwd() + '/config')           #The applications configuration file is located here.
+
+#All the applications python code is located in the python directory.
+sys.path.append(os.getcwd() + '/python')
+#The applications configuration file is located here.
+sys.path.append(os.getcwd() + '/config')           
 
 # Ok let's get started!
 #

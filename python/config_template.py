@@ -47,7 +47,6 @@ mqtt_port = 8883
 mqtt_username = ""
 encrypted_mqtt_password = "" 
 
-
 # ######## Light Controller #########
 #
 # Specify as many on/off times as you like.  Resolution is 1 minute so all light events
