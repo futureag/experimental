@@ -33,12 +33,11 @@ def start_fan_controller(app_state):
       thermostat_state['target_temp'] = get_target_temp() 
 
       try:
-          si=si7021()
+          si = si7021()
           current_temp = si.getTempC()
           thermostat_state = adjustThermostat(thermostat_state, current_temp)  
 
       except IOError as e:
           logger.error('Failure to get temperature, no sensor found; check pins and sensor')
-          logData('si7021-top', 'Failure', 'temperature', 'air', '', 'celsius', str(e))
 
       sleep(1)

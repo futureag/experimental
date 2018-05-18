@@ -1,7 +1,8 @@
 *.pyc
 *.swp
 *.log
+*.svg
 __pycache__/
-pictures
-config
-logs
+data/*.txt
+logs/*.log
+config/config.py

@@ -43,7 +43,7 @@ def start_mqtt_client(config_file_passphrase, encrypted_mqtt_password):
       # print("MQTT password: " + mqtt_password + "\n") 
       mqtt_password = password_decrypt_results.decode("utf-8")[0:-1]
    except CalledProcessError as e:
-      logger.error('Execution of openssl failed with return code:{}.\n'.format(e.returncode))
+      logger.error('Execution of openssl failed with return code:{}.'.format(e.returncode))
       return [False]
 
    mqtt_client = paho.mqtt.client.Client(mqtt_client_id)

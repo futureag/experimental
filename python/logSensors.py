@@ -42,10 +42,14 @@ def start_sensor_data_logger(mqtt_client, app_state):
    while not app_state['stop']:
 
       if time_to_sample():
-         if need_to_log_locally == True or log_data_via_mqtt == True:
+
+         logger.debug('Need to log locally: {}, mqtt logging enabled: {}'\
+                      .format(need_to_log_locally(), log_data_via_mqtt))
+
+         if need_to_log_locally() == True or log_data_via_mqtt == True:
             for x in logging_devices:
                for y in x['attributes']:
-                  
+                  logger.debug('Logging sensor reading for sensor {} and attribute {}'.format(x['name'], y['name']))                  
                   #Get the current value
                   date_time = datetime.datetime.utcnow()
                   attribute_val = x['instance'].Get(y['name'])

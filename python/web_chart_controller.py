@@ -5,8 +5,7 @@ from sys import path
 from generate_chart import generate_chart
 from logging import getLogger
 
-#- path.append('/opt/mvp/config')
-from config import charting_interval, chart_output_folder, couchdb_location_url, chart_list
+from config import charting_interval, couchdb_location_url, chart_list
 
 logger = getLogger('mvp.' + __name__)
 
@@ -25,14 +24,14 @@ def start_web_chart_controller(app_state):
          # Figure out how the script directory is getting put in the path. Or in other words
          # how does the system find this command file.
          # Need to make location of the render.sh script a config file setting.
-         #- charting_shell_command = '~/openag-mvp/scripts/render.sh'
 
          try:
-            #TBD - At some point upgrade to the new Python (3.5 or newer) and use the .run commmand.
 
             for chart_info in chart_list:
 
-               generate_chart(couchdb_location_url, chart_output_folder, chart_info)
+               generate_chart(couchdb_location_url, chart_info)
+
+               #line_chart.render_to_file(output_path + chart_info['chart_file_name'])
 
             state['last_charting_ts'] = this_ts
             state['last_chart_generation_date'] = datetime.now()

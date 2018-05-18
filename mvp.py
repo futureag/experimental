@@ -44,7 +44,6 @@ def get_passphrase():
 
    # If mqtt is enabled in mvp_configuration then ask the user for the passphrase.
    if enable_mqtt == True:
-      #- aes_passphrase = getpass.getpass("Enter your passphrase: ")
       return getpass.getpass("Enter your passphrase: ")
    else:
       return None
@@ -59,12 +58,12 @@ config_file_passphrase = get_passphrase()
 # rotation.
 #
 logger = logging.getLogger('mvp')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 handler = RotatingFileHandler(os.getcwd() + '/logs/mvp.log', maxBytes=10*1000*1000, backupCount=5)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s:%(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-logger.info('Starting mvp system')
+logger.info('############## starting mvp system ##############')
 
 app_state = {'stop': False}
 
@@ -114,7 +113,7 @@ while True:
              + '(exit) -> exits this program.')
       if cmd == '(exit)':
          app_state['stop'] = True
-         print('shutting down, please wait a few secconds.')
+         print('shutting down, please wait a few seconds.')
          sleep(2)
          break
       if cmd != '(help)' or cmd != '(exit)':

@@ -1,3 +1,4 @@
+from os import getcwd
 import pygal
 from sys import exc_info
 import requests
@@ -10,7 +11,7 @@ from logging import getLogger
 
 logger = getLogger('mvp.' + __name__)
 
-def generate_chart(couchdb_url, output_path, chart_info):
+def generate_chart(couchdb_url, chart_info):
 
     # Get the temperature data from couch
     #
@@ -23,7 +24,7 @@ def generate_chart(couchdb_url, output_path, chart_info):
                      chart_info['device']['attributes'][chart_info['attribute_index']]['name'],\
                      chart_info['device']['name'],\
                      '{}')
-    #- print(couch_query)
+    logger.debug('prepared couchdb query: {}'.format(couch_query))
     r = requests.get(couch_query)
 
     # TBD: the following prints out '<Response [200]>'. Need to wrap error checking around this call and suppress
@@ -43,9 +44,9 @@ def generate_chart(couchdb_url, output_path, chart_info):
         line_chart.x_labels = ts_lst
 
         #need to reverse order to go from earliest to latest
-        #v_lst.reverse()
+        v_lst.reverse()
 
         line_chart.add(chart_info['data_stream_name'], v_lst)
-        line_chart.render_to_file(output_path + chart_info['chart_file_name'])
+        line_chart.render_to_file(getcwd() + '/web/' + chart_info['chart_file_name'])
     except:
         logger.error('Chart generation failed: {}'.format(exc_info()[0]))
