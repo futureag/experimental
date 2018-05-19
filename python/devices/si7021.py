@@ -1,3 +1,4 @@
+import threading
 import smbus2, time
 from logging import getLogger
 import sys
@@ -9,6 +10,7 @@ previous_temp = 0xe0
 logger = getLogger('mvp.' + __name__)
 
 class si7021(object):
+
     def __init__(self):
         self.bus = smbus2.SMBus(1)
 
@@ -29,7 +31,8 @@ class si7021(object):
 
     def write(self, command):
         self.bus.write_byte(address, command)
-	
+
+    """
     def temp_and_humidity(self):
         self.write(rh_no_hold)
         time.sleep(0.03)
@@ -39,17 +42,22 @@ class si7021(object):
         temp_c = self.read_word()
         temp_c = 175.72/65536.0*temp_c-46.85
         return temp_c, percent_rh
+    """
 
     def getHumidity(self):
-        self.write(rh_no_hold)
-        time.sleep(0.03)
-        percent_rh = self.read_word()
+        lock = threading.Lock()
+        with lock:
+            self.write(rh_no_hold)
+            time.sleep(0.03)
+            percent_rh = self.read_word()
         percent_rh = 125.0/65536.0*percent_rh-6.0
         return percent_rh
 
     def getTempC(self):
-        self.write(previous_temp)
-        temp_c = self.read_word()
+        lock = threading.Lock()
+        with lock:
+            self.write(previous_temp)
+            temp_c = self.read_word()
         temp_c = 175.72/65536.0*temp_c-46.85
         return temp_c
 
