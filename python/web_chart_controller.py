@@ -31,8 +31,6 @@ def start_web_chart_controller(app_state):
 
                generate_chart(couchdb_location_url, chart_info)
 
-               #line_chart.render_to_file(output_path + chart_info['chart_file_name'])
-
             state['last_charting_ts'] = this_ts
             state['last_chart_generation_date'] = datetime.now()
 

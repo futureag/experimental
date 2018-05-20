@@ -104,20 +104,22 @@ t4.start()
 t5.start()
 t6.start()
 
+print('Enter: (help) to see a list of available commands.')
+
 while True:
+   
    try:
       # TBD: Need to sanitize the name to guard against shell attack.
-      print('Enter: (help) to see a list of available commands.')
       cmd = input(device_name + ':')
       if cmd == '(help)':
-         print('(help) -> displays this help message./n'
-             + '(exit) -> exits this program.')
-      if cmd == '(exit)':
+         print('(help) -> displays this help message.')
+         print('(exit) -> exits this program.')
+      elif cmd == '(exit)':
          app_state['stop'] = True
          print('shutting down, please wait a few seconds.')
-         sleep(2)
+         #- sleep(2)
          break
-      if cmd != '(help)' or cmd != '(exit)':
+      else:
          print('unknown command. Enter: (help) to see a list of available commands.')
    except:
       app_state['stop'] = True

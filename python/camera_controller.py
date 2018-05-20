@@ -22,9 +22,8 @@ def start_camera_controller(app_state):
 
    logger.info('Starting camera controller.')
 
-   state = {'hour_of_last_picture':None, 
-            'startup':True,
-            'hour_of_last_error':None}
+   state = {'hour_of_last_try':None, 
+            'startup':True}
 
    while not app_state['stop']:
 
@@ -33,8 +32,10 @@ def start_camera_controller(app_state):
       this_instant = datetime.now() 
 
       if state['startup'] == True or \
-         ((state['hour_of_last_picture'] != this_instant.time().hour) and is_picture_minute(this_instant)):
+          ((state['hour_of_last_try'] != this_instant.time().hour) and\
+          is_picture_minute(this_instant)):
          
+         state['hour_of_last_try'] = this_instant.time().hour
          state['startup'] = False
 
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
@@ -52,43 +53,36 @@ def start_camera_controller(app_state):
             # attacks.
             picture_results = run(camera_shell_command, stdout=PIPE, stderr=PIPE, shell=True, check=False)
 
-            if picture_results.returncode == 0 and len(picture_results.stderr) == 0:
+            if picture_results.returncode == 0:
+                
+                if len(picture_results.stderr) != 0:
+                    logger.debug('---stderr: {}: '.format(picture_results.stderr.decode('ascii')))
 
                 logger.debug('fsweb command success. See the following lines for more info:')
                 logger.debug('---return code: {} ...'.format(picture_results.returncode))
-                logger.debug('---stderr: {} ...'.format(picture_results.stderr.decode('ascii')))
                 logger.debug('---args: {} ...'.format(picture_results.args))
                 logger.debug('---stdout: {}'.format(picture_results.stdout.decode('ascii')))
 
                 # Copy the picture to the web directory
                 if copy_current_image == True:
                    try:
-                      copyfile(file_location, os.getcwd() + '/web/image.jpg')
-                      logger.info('Copied latest image file to {}'.format(current_image_copy_location))
+                      current_image_copy_location = getcwd() + '/web/image.jpg'
+                      logger.debug('copying newest picture to web directory: source image'
+                                   + ' path: {}, destination path: {}'.format(file_location, current_image_copy_location))
+                      copyfile(file_location, current_image_copy_location)
                    except:
-                      if state['hour_of_last_error'] != this_instant.time().hour:
-                         state['hour_of_last_error'] = this_instant.time().hour
-                         logger.error("Coudn't copy latest image file to the web directory."
-                                      + ' Check fswebcam for proper operations.')
-                # Update your current state
-                state['hour_of_last_picture'] = this_instant.time().hour
-                state['startup'] = False
+                      logger.error("Coudn't copy latest image file to the web directory."
+                                      + ' Check fswebcam for proper operations: {}, {}'.format(exc_info()[0], exc_info()[1]))
             else:
-               if state['hour_of_last_error'] != this_instant.time().hour:
-                  state['hour_of_last_error'] = this_instant.time().hour
-                  logger.error('fsweb command failed. See following lines for more info:')
-                  logger.error('---return code: {}'.format(picture_results.returncode))
-                  logger.error('---stderr: {}'.format(picture_results.stderr.decode('ascii')))
-                  logger.error('---args: {}'.format(picture_results.args))
-                  logger.error('---stdout: {}'.format(picture_results.stdout.decode('ascii')))
+               logger.error('fsweb command failed. See following lines for more info:')
+               logger.error('---return code: {}'.format(picture_results.returncode))
+               logger.error('---stderr: {}'.format(picture_results.stderr.decode('ascii')))
+               logger.error('---args: {}'.format(picture_results.args))
+               logger.error('---stdout: {}'.format(picture_results.stdout.decode('ascii')))
 
          except CalledProcessError as e:
-            if state['hour_of_last_error'] != this_instant.time().hour:
-               state['hour_of_last_error'] = this_instant.time().hour
-               logger.error('fswebcam call failed with the following results: {}'.format(exc_info()[0]))
+            logger.error('fswebcam call failed with the following results: {}'.format(exc_info()[0]))
          except:
-            if state['hour_of_last_error'] != this_instant.time().hour:
-               state['hour_of_last_error'] = this_instant.time().hour
-               logger.error('Camera error: {}'.format(exc_info()[0]))
+            logger.error('Camera error: {}'.format(exc_info()[0]))
             
       sleep(1)  

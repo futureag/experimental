@@ -1,13 +1,13 @@
-# Based upon code originally witten by Howard Webb on 7/25/2017.
+# Based upon code originally witten by Howard Webb.
 # Fan actuator controlled by thermometer
 
 from thermostat import adjustThermostat
 # TBD - Factor out the reference to the si7021. The code should get it via the configuration file device list.
 from devices.si7021 import *
 from logData import logData
-from time import sleep
+from time import sleep, time
 from datetime import datetime
-import sys
+from sys import exc_info
 from logging import getLogger
 
 from config import max_air_temperature 
@@ -33,19 +33,22 @@ def start_fan_controller(app_state):
 
    logger.info('starting fan controller')
 
-   thermostat_state = {'fan_on':False, 'target_temp':max_air_temperature}
+   thermostat_state = {'fan_on':False, 'target_temp':max_air_temperature, 'last_error_ts':0}
 
    while not app_state['stop']:
-
-      #- update target temp
-      #- thermostat_state['target_temp'] = get_target_temp() 
 
       try:
           si = si7021()
           current_temp = si.getTempC()
           thermostat_state = adjustThermostat(thermostat_state, current_temp)  
 
-      except IOError as e:
-          logger.error('Failure to get temperature, no sensor found; check pins and sensor')
+      except:
+
+          # Limit log entries to one per minute.
+          ts = time()
+          if ts - thermostat_state['last_error_ts'] > 60:
+             logger.error('Failure to get temperature, no sensor found; check pins and sensor: {}, {}'.format(\
+                           exc_info()[0], exc_info()[1]))
+          thermostat_state['last_error_ts'] = ts
 
       sleep(1)

@@ -53,6 +53,6 @@ def adjustThermostat(thermostat_state, temp):
        logger.info('Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(\
                    datetime.now(), thermostat_state['target_temp'], temp,\
                    fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
-       logData('fan', 'Success', 'fan', None, '{}'.format(fan_state(currentFanOn)))
+       logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(currentFanOn), '', ''))
 
     return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}

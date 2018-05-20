@@ -47,6 +47,7 @@ def start_sensor_data_logger(mqtt_client, app_state):
                       .format(need_to_log_locally(), log_data_via_mqtt))
 
          if need_to_log_locally() == True or log_data_via_mqtt == True:
+            logger.info('Logging sensor readings')
             for x in logging_devices:
                for y in x['attributes']:
                   logger.debug('Logging sensor reading for sensor {} and attribute {}'.format(x['name'], y['name']))                  
@@ -62,5 +63,7 @@ def start_sensor_data_logger(mqtt_client, app_state):
                   if log_data_via_mqtt:
                      send_sensor_data_via_mqtt(x, mqtt_client, x['name'], y['name'], y['subject'], 
                                                '{:+.1f}'.format(attribute_val), y['units'], date_time)
+         else:
+            logger.info('skipping sensor logging because no logging is turned off')
 
       time.sleep(1)
