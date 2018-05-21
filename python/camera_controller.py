@@ -72,7 +72,8 @@ def start_camera_controller(app_state):
                       copyfile(file_location, current_image_copy_location)
                    except:
                       logger.error("Coudn't copy latest image file to the web directory."
-                                      + ' Check fswebcam for proper operations: {}, {}'.format(exc_info()[0], exc_info()[1]))
+                                   + ' Check fswebcam for proper operations: {}, {}'.format(\
+                                   exc_info()[0], exc_info()[1]))
             else:
                logger.error('fsweb command failed. See following lines for more info:')
                logger.error('---return code: {}'.format(picture_results.returncode))
@@ -81,8 +82,9 @@ def start_camera_controller(app_state):
                logger.error('---stdout: {}'.format(picture_results.stdout.decode('ascii')))
 
          except CalledProcessError as e:
-            logger.error('fswebcam call failed with the following results: {}'.format(exc_info()[0]))
+             logger.error('fswebcam call failed with the following results: {}: {}'.format(\
+                           exc_info()[0], exc_info()[1]))
          except:
-            logger.error('Camera error: {}'.format(exc_info()[0]))
+             logger.error('Camera error: {}: {}'.format(exc_info()[0], exc_info()[1]))
             
       sleep(1)  

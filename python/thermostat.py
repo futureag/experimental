@@ -55,4 +55,5 @@ def adjustThermostat(thermostat_state, temp):
                    fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
        logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(currentFanOn), '', ''))
 
-    return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}
+    return currentFanOn
+    #- return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}

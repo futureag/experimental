@@ -11,6 +11,8 @@ logger = getLogger('mvp.' + __name__)
 
 def start_web_chart_controller(app_state):
 
+   logger.info('starting web chart generator controller')
+
    # Set the intial timestamp to 0 thus forcing a web chart generation at start up.
    state = {'last_charting_ts':0, 'last_chart_generation_date':None}
 
@@ -34,8 +36,7 @@ def start_web_chart_controller(app_state):
             state['last_charting_ts'] = this_ts
             state['last_chart_generation_date'] = datetime.now()
 
-            logger.info('Created web charts at {:%Y-%m-%d %H:%M:%S}'.format(datetime.now(),\
-                        state['last_chart_generation_date']))
+            logger.info('Created new web charts.')
 
          except CalledProcessError as e:
             logger.error('render.sh call failed with the following results:{}'.format(charting_results))

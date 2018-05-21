@@ -58,7 +58,7 @@ config_file_passphrase = get_passphrase()
 # rotation.
 #
 logger = logging.getLogger('mvp')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 handler = RotatingFileHandler(os.getcwd() + '/logs/mvp.log', maxBytes=10*1000*1000, backupCount=5)
 formatter = logging.Formatter(fmt='%(asctime)s %(levelname)s %(name)s:%(message)s', 
                               datefmt='%Y-%m-%d %I:%M:%S %p %Z')

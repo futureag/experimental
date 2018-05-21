@@ -105,6 +105,14 @@ device_2 = {'name':'ds18b20',
                             'id':'b794687a-9970-4d12-a890-3aba98332ab8'}]}
 
 
+# ######## Fan Controller #########
+# Speciy the target max chamber air temperature in Celsius.
+# The fan will be turned on when the temperature exceeds this value.
+#
+max_air_temperature = 25
+fan_controller_temp_sensor = device_1['instance']
+
+
 # ######## Data Logging ########
 # Specify the sensor sampling interval in seconds.
 #
