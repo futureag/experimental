@@ -1,6 +1,24 @@
 # This module is main program.
 #
-# Run this program with the following command: python3 mvp.py
+# Run this program from the command line as per:
+#   cd /home/pi/openag-mvp
+#   python3 mvp.py
+#
+# or run the program at startup as a systemd service using the following service file:
+#    [Unit]
+#    Description=mvp
+#    Wants=network-online.target
+#    After=network-online.target
+#
+#    [Service]
+#    RuntimeDirectory=/home/pi/openag-mvp
+#    WorkingDirectory=/home/pi/openag-mvp
+#    User=pi
+#    ExecStart=/usr/bin/python3 /home/pi/openag-mvp/mvp.py
+#    Restart=on-failure
+#
+#    [Install]
+#    WantedBy=multi-user.target
 #
 # It spawns the following threads:
 # MQTT Client
