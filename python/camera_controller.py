@@ -34,15 +34,17 @@ def start_camera_controller(app_state):
       if state['startup'] == True or \
           ((state['hour_of_last_try'] != this_instant.time().hour) and\
           is_picture_minute(this_instant)):
-         
+        
+         logger.info('Created new camera image')
+
          state['hour_of_last_try'] = this_instant.time().hour
          state['startup'] = False
 
          file_name = '{:%Y%m%d_%H_%M_%S}.jpg'.format(datetime.utcnow())
          file_location = '{}{}'.format(getcwd() + '/pictures/', file_name) 
 
-         #- camera_shell_command = 'fswebcam -r 1280x720 --no-banner --log syslog {}'.format(file_location)
-         camera_shell_command = 'fswebcam -r 1280x720 --no-banner --verbose  --save {}'.format(file_location)
+         camera_shell_command = 'fswebcam -r 1280x720 --no-banner --timestamp "%d-%m-%Y %H:%M:%S (%Z)"'\
+                                + ' --verbose  --save {}'.format(file_location)
          logger.debug('Preparing to run shell command: {}'.format(camera_shell_command))
 
          try:
@@ -68,7 +70,8 @@ def start_camera_controller(app_state):
                    try:
                       current_image_copy_location = getcwd() + '/web/image.jpg'
                       logger.debug('copying newest picture to web directory: source image'
-                                   + ' path: {}, destination path: {}'.format(file_location, current_image_copy_location))
+                                   + ' path: {}, destination path: {}'.format(\
+                                   file_location, current_image_copy_location))
                       copyfile(file_location, current_image_copy_location)
                    except:
                       logger.error("Coudn't copy latest image file to the web directory."

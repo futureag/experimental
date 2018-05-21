@@ -1,6 +1,6 @@
-# This module is the main program.
+# This module is main program.
 #
-# Run this program in the directory where it resides with the following command: python3 mvp.py
+# Run this program with the following command: python3 mvp.py
 #
 # It spawns the following threads:
 # MQTT Client
@@ -17,10 +17,11 @@
 import os
 import sys
 
-#All the applications python code is located in the python directory.
+# All the applications python code is located in the python directory.
 sys.path.append(os.getcwd() + '/python')
 sys.path.append(os.getcwd() + '/python/devices')
-#The applications configuration file is located here.
+
+# The applications configuration file is located here.
 sys.path.append(os.getcwd() + '/config')           
 
 # Ok let's get started!
@@ -112,10 +113,11 @@ while True:
       # TBD: Need to sanitize the name to guard against shell attack.
       cmd = input(device_name + ':')
       if cmd == '(help)':
-         print('(help) -> displays this help message.')
-         print('(exit) -> exits this program.')
+         print('(help) -> display this help message.')
+         print('(exit) -> exit this program.')
       elif cmd == '(exit)':
          app_state['stop'] = True
+         logger.info('shutting down')
          print('shutting down, please wait a few seconds.')
          #- sleep(2)
          break
