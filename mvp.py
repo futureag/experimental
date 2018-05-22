@@ -4,14 +4,15 @@
 #   cd /home/pi/openag-mvp
 #   python3 mvp.py
 #
-# or run the program at startup as a systemd service using the following service file:
+#   pythone3 mvp.py --help  -> Will display available command line arguments.
+#
+# or run the program at startup as a systemd service using the following service file contents:
 #    [Unit]
 #    Description=mvp
 #    Wants=network-online.target
 #    After=network-online.target
 #
 #    [Service]
-#    RuntimeDirectory=/home/pi/openag-mvp
 #    WorkingDirectory=/home/pi/openag-mvp
 #    User=pi
 #    ExecStart=/usr/bin/python3 /home/pi/openag-mvp/mvp.py
@@ -28,15 +29,19 @@
 # Camera Controller
 # Website Chart Controller 
 #
-# It is assumed that mvp.py is located in a directory that contains code and data organized identical to the way
-# it is stored in github (https://github.com/ferguman/openag-mvp)
+# It is assumed that mvp.py is located in a directory that contains code and data organized
+# identical to the way it is stored in github (https://github.com/ferguman/openag-mvp)
 # 
-# Tell the python interpretter where to look for various files relative to the current working directory.
+# Tell the python interpretter where to look for various files relative to the current working
+# directory.
+#
 import os
 import sys
 
 # All the applications python code is located in the python directory.
+#
 sys.path.append(os.getcwd() + '/python')
+#- TBD - factor out the following line.
 sys.path.append(os.getcwd() + '/python/devices')
 
 # The applications configuration file is located here.
@@ -56,8 +61,15 @@ import getpass
 from adjustThermostat import start_fan_controller
 from camera_controller import start_camera_controller
 from web_chart_controller import start_web_chart_controller
+import argparse
 
 from config import device_name, enable_mqtt, encrypted_mqtt_password
+
+# Process the command line args
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--interactive', help='provide a console prompt for interactive\
+                    operation', action='store_true')
+args = parser.parse_args()
 
 def get_passphrase():
 
@@ -123,27 +135,29 @@ t4.start()
 t5.start()
 t6.start()
 
-print('Enter: (help) to see a list of available commands.')
+if args.interactive:
 
-while True:
-   
-   try:
-      # TBD: Need to sanitize the name to guard against shell attack.
-      cmd = input(device_name + ':')
-      if cmd == '(help)':
-         print('(help) -> display this help message.')
-         print('(exit) -> exit this program.')
-      elif cmd == '(exit)':
-         app_state['stop'] = True
-         logger.info('shutting down')
-         print('shutting down, please wait a few seconds.')
-         #- sleep(2)
-         break
-      else:
-         print('unknown command. Enter: (help) to see a list of available commands.')
-   except:
-      app_state['stop'] = True
-      break
+    print('Enter: (help) to see a list of available commands.')
+
+    while True:
+       
+       try:
+          # TBD: Need to sanitize the name to guard against shell attack.
+          cmd = input(device_name + ':')
+          if cmd == '(help)':
+             print('(help) -> display this help message.')
+             print('(exit) -> exit this program.')
+          elif cmd == '(exit)':
+             app_state['stop'] = True
+             logger.info('shutting down')
+             print('shutting down, please wait a few seconds.')
+             #- sleep(2)
+             break
+          else:
+             print('unknown command. Enter: (help) to see a list of available commands.')
+       except:
+          app_state['stop'] = True
+          break
 
 # Wait for threads to complete.
 #
