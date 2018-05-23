@@ -5,7 +5,7 @@ import requests
 import json
 from logging import getLogger
 
-from config import log_data_to_local_couchdb, log_data_to_local_file
+from config.config import log_data_to_local_couchdb, log_data_to_local_file
 
 logger = getLogger('mvp.' + __name__)
 

@@ -2,14 +2,13 @@
 #Lights are wired into Relay #4 (Pin 29)
 
 import RPi.GPIO as GPIO
-from logData import logData
+from python.logData import logData
 from time import sleep 
 from datetime import datetime
 import sys
 from logging import getLogger
 
-#- sys.path.append('/opt/mvp/config')
-from config import light_controller_program, log_light_state_to_local_couchdb, log_light_state_to_local_file
+from config.config import light_controller_program, log_light_state_to_local_couchdb, log_light_state_to_local_file
 
 logger = getLogger('mvp.' + __name__)
 

@@ -3,7 +3,7 @@ import datetime
 from logging import getLogger
 
 #- path.append('/opt/mvp/config')
-from config import organization_guid
+from config.config import organization_guid
 
 logger = getLogger('mvp.' + __name__)
 

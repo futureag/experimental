@@ -1,12 +1,12 @@
 from sys import path
 from time import time, sleep
 import datetime
-from logData import logData, need_to_log_locally
-from send_mqtt_data import send_sensor_data_via_mqtt
 from logging import getLogger
 
-from config import data_logger_sample_interval, logging_devices, log_data_to_local_file,\
+from config.config import data_logger_sample_interval, logging_devices, log_data_to_local_file,\
                    log_data_to_local_couchdb, log_data_via_mqtt
+from python.logData import logData, need_to_log_locally
+from python.send_mqtt_data import send_sensor_data_via_mqtt
 
 # Check sensors and log to file
 

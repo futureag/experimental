@@ -1,14 +1,14 @@
 # Based upon code originally witten by Howard Webb.
 # Fan actuator controlled by thermometer
 
-from thermostat import adjustThermostat
-from logData import logData
-from time import sleep, time
 from datetime import datetime
-from sys import exc_info
 from logging import getLogger
+from sys import exc_info
+from time import sleep, time
 
-from config import max_air_temperature, fan_controller_temp_sensor 
+from config.config import max_air_temperature, fan_controller_temp_sensor 
+from python.logData import logData
+from python.thermostat import adjustThermostat
 
 logger = getLogger('mvp.' + __name__)
 

@@ -6,5 +6,5 @@ __pycache__/
 data/*.txt
 logs/*.log
 web/image.jpg
-config/config.py
+config/
 pictures/*.*

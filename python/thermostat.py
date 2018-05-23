@@ -1,8 +1,9 @@
 import RPi.GPIO as GPIO
-from logData import logData
-from saveGlobals import setVariable
 from datetime import datetime
 from logging import getLogger
+
+from python.logData import logData
+#- from saveGlobals import setVariable
 
 #thermostat.py
 #controlls the exhaust fan, turns it on when temperature is over the target temperature
@@ -27,8 +28,6 @@ def adjustThermostat(thermostat_state, temp):
     _fanPin = 35
     priorFanOn = thermostat_state['fan_on']
     targetTemp = thermostat_state['target_temp']
-    #print("Target Temp %s" %targetTemp)
-    #print("Current Temp: %s" %temp)
     
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
@@ -51,7 +50,7 @@ def adjustThermostat(thermostat_state, temp):
     # if the fan state has change then log a message. 
     if thermostat_state['fan_on'] != currentFanOn: 
        logger.info('Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(\
-                   datetime.now(), thermostat_state['target_temp'], temp,\
+                   thermostat_state['target_temp'], temp,\
                    fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
        logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(currentFanOn), '', ''))
 

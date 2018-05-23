@@ -6,7 +6,7 @@ from sys import path, exc_info
 from shutil import copyfile
 from logging import getLogger
 
-from config import camera_controller_program, copy_current_image 
+from config.config import camera_controller_program, copy_current_image 
 
 logger = getLogger('mvp.' + __name__)
 

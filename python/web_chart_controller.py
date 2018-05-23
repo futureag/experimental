@@ -1,11 +1,11 @@
-from subprocess import check_call, CalledProcessError
 from datetime import datetime
-from time import sleep, time
-from sys import path
-from generate_chart import generate_chart
 from logging import getLogger
+from subprocess import check_call, CalledProcessError
+from sys import path
+from time import sleep, time
 
-from config import charting_interval, couchdb_location_url, chart_list
+from config.config import charting_interval, couchdb_location_url, chart_list
+from python.generate_chart import generate_chart
 
 logger = getLogger('mvp.' + __name__)
 
