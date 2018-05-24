@@ -26,8 +26,8 @@ def adjustThermostat(thermostat_state, temp):
     #Turn the fan on or off in relationship to target temperature
 
     _fanPin = 35
-    priorFanOn = thermostat_state['fan_on']
-    targetTemp = thermostat_state['target_temp']
+    #- priorFanOn = thermostat_state['fan_on']
+    #- targetTemp = thermostat_state['target_temp']
     
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
@@ -35,12 +35,16 @@ def adjustThermostat(thermostat_state, temp):
     #    GPIO.setup(fanPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     #    fanOn = GPIO.input(fanPin)
     
+    logger.info('check 3 {}, {}'.format(thermostat_state['fan_on'], thermostat_state['target_temp'])
+    
     # TBD - should we add some hysteresous?
-    if temp > targetTemp:
+    if temp > thermostat_state['target_temp']:
+        logger.info('check 1')
         GPIO.setup(_fanPin, GPIO.OUT)
         GPIO.output(_fanPin, GPIO.HIGH)
         currentFanOn = True
     else:
+        logger.info('check 2')
         GPIO.setup(_fanPin, GPIO.OUT)
         GPIO.output(_fanPin, GPIO.LOW)    
         currentFanOn = False
