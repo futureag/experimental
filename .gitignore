@@ -9,3 +9,4 @@ web/image.jpg
 config/*.*
 !config/.gitkeep
 pictures/*.*
+!pictures/.gitkeep
