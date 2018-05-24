@@ -2,7 +2,7 @@
 
 This is a fork of the [MVP II](https://github.com/webbhm/OpenAg-MVP-II).
 
-It maintains the same funcionality as the MVP and adds some additional features. Many thanks to the team that created the MVP II code and hardware designs.
+It maintains the same functionality as the MVP and adds some additional features. Many thanks to the team that created the MVP II code and hardware designs.
 
 ## Background 
 

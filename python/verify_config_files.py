@@ -17,20 +17,23 @@ def verify_config_file():
          copyfile(config_defaultfile_path, config_livefile_path)
 
    except:
-       logger.error('Could not verify configuration file: {}, {}'.format(exc_info()[0], exc_info()[1]))
-       exit(2)
+       logger.error('Could not verify configuration file: {}, {} exiting ...'.format(\
+                    exc_info()[0], exc_info()[1]))
+       exit()
 
 def verify_web_config_file():
 
       try:
 
-         web_server_config_default_file_path = getcwd() + '/python/web_server_config_default.py'
-         web_server_config_livefile_path = getcwd() + '/config/web_server_config.py'
+         web_server_defaultfile_path = getcwd() + '/python/web_server_config_default.py'
+         web_server_livefile_path = getcwd() + '/config/web_server_config.py'
 
-         if not path.isfile(web_server_config_livefile_path):
-            logger.warning('No web configuration file was found. Reverting to the default configuration file.')
-            copyfile(web_server_config_default_file_path,web_server_config_livefile_path)
+         if not path.isfile(web_server_livefile_path):
+            print('No web configuration file was found. Reverting to the default'
+                  + ' configuration file.')
+            copyfile(web_server_defaultfile_path, web_server_livefile_path )
 
       except:
-         logger.error('Could not verify web configuration file: {}, {}'.format(exc_info()[0], exc_info()[1]))
-         exit(3)
+         print('Could not verify web configuration file: {}, {} exiting ...'.format(\
+               exc_info()[0], exc_info()[1]))
+         exit()
