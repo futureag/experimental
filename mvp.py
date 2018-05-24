@@ -42,7 +42,16 @@
 from check_python_version import check_python_version
 check_python_version()
 
-# After the above check we know it's safe to load python libraries
+from python.mvp_logger import get_logger
+from python.verify_config_files import verify_config_file
+logger = get_logger()
+
+logger.info('############## starting mvp system ##############')
+
+# Check that the configuration file is present and then load it.
+verify_config_file()
+
+# After the above check we know it's safe to load the rest of the modules.
 import threading
 
 # Load mvp libraries
@@ -52,20 +61,12 @@ from python.camera_controller import start_camera_controller
 from python.light_controller import start_light_controller
 from python.logSensors import start_sensor_data_logger
 from python.mqtt_client import start_mvp_mqtt_client
-from python.mvp_logger import get_logger
 from python.repl import repl
-from python.verify_config_files import verify_config_file
 from python.web_chart_controller import start_web_chart_controller
 
 # Process the command line args
 args = get_args()
 
-logger = get_logger()
-
-logger.info('############## starting mvp system ##############')
-
-# Check that the configuration file is present and then load it.
-verify_config_file()
 
 app_state = {'stop': False, 'silent_mode':args.silent}
 
