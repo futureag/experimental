@@ -34,32 +34,40 @@
 #                       following:
 #                       1) enable_mqtt -> set to True
 #                       2) organization_guid -> This value is sent as part of the mqtt topic.
-#                       3) log_data_via_mqtt -> set to True
-#                       4) mqtt_client_id -> Set it to some unique value such as a guid.
-#                       5) mqtt_url and mqtt_port -> Obtain these from your mqqt broker administrator. 
-#                       6) mqtt_username and "password" -> Get these from your mqtt broker administrator.
+#                       3) device_id ->  Set it to some unique value such as a guid.
+#                       4) si7021_device_id -> Set it to some unique value such as a guid.
+#                       5) log_data_via_mqtt -> set to True
+#                       6) mqtt_url and mqtt_port -> Obtain these from your mqqt broker administrator. 
+#                       7) mqtt_username and "password" -> Get these from your mqtt broker administrator.
 #                          You can use either plaintext or enrypted passwords (restrictions apply).
 
-# You can give your device a custom name. The name will used at terminal prompts and other
-# places where it seems useful to display the name of this device.  
-device_name = 'mvp'
-
-# ########### MQTT Settings #############
-enable_mqtt = False
-
-# included in topics (e.g data/v1/[organization_guid).  If you don't want it in the topic
+# Included in topics (e.g data/v1/[organization_guid).  If you don't want it in the topic
 # values then set it be an empty string. Note that if you are connectiong to a mvp compatible
 # mqtt broker then you will need to get the value from the broker's administrator.
 # then you will need to get the value from them and put it here.
 #
 organization_guid = ""
 
+# You can give your device a custom name. The name will used at terminal prompts and other
+# places where it seems useful to display the name of this device.  
+#
+device_name = 'mvp'
+
+# Set the device id below to unique values.  If you want to connect to an MVP compatible cloud
+# provider then get the value from your cloud provider administrator.
+#
+device_id = ''
+si7021_device_id = ''
+
+# ########### MQTT Settings #############
+enable_mqtt = False
+
 # This value is passed straight through as the client id data on the mqtt connection.
 # You should pick a value that you know to be unique across all the MQTT enabled devices
-# that will use the same username to connect to the broker.  If in doubt generate a
+# that will use the same username to connect to the broker.  If in doubt generate a 
 # guid and use it.
 #
-mqtt_client_id = ""
+mqtt_client_id = device_id
 
 # Note that the MVP only supports TLS (aka SSL) communication to the MQTT broker .  If your broker
 # does not support HTTPS then it can't be used with the MVP.
@@ -126,7 +134,7 @@ system = {'name':'mvp',
 
 device_1 = {'name':'si7021',
             'instance':si7021(),
-            'device_id':'c6bc257e-2d18-41f0-b9f4-d0ca1f1224df',
+            'device_id':si7021_device_id,
             'subject_location':'chamber',
             'subject_location_id':'c0b1d0dc-66a4-46da-8aec-cc308a3359a1',
             'attributes':[{'name':'temperature', 'subject':'air', 'units': 'celsius',
