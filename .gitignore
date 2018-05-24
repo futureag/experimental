@@ -4,7 +4,8 @@
 *.svg
 __pycache__/
 data/*.txt
-logs/*.log
+logs/*.*
+!logs/.gitkeep
 web/image.jpg
 config/*.*
 !config/.gitkeep
