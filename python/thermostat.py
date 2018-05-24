@@ -35,7 +35,7 @@ def adjustThermostat(thermostat_state, temp):
     #    GPIO.setup(fanPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     #    fanOn = GPIO.input(fanPin)
     
-    logger.info('check 3 {}, {}'.format(thermostat_state['fan_on'], thermostat_state['target_temp'])
+    logger.info('check 3 {}, {}'.format(thermostat_state['fan_on'], thermostat_state['target_temp']))
     
     # TBD - should we add some hysteresous?
     if temp > thermostat_state['target_temp']:
