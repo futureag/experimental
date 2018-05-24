@@ -40,12 +40,10 @@ def adjustThermostat(thermostat_state, temp):
         GPIO.setup(_fanPin, GPIO.OUT)
         GPIO.output(_fanPin, GPIO.HIGH)
         currentFanOn = True
-        #print("Fan On")
     else:
         GPIO.setup(_fanPin, GPIO.OUT)
         GPIO.output(_fanPin, GPIO.LOW)    
         currentFanOn = False
-        #print("Fan Off")
 
     # if the fan state has change then log a message. 
     if thermostat_state['fan_on'] != currentFanOn: 
@@ -54,5 +52,6 @@ def adjustThermostat(thermostat_state, temp):
                    fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
        logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(currentFanOn), '', ''))
 
-    return currentFanOn
-    #- return {'fan_on':currentFanOn, 'target_temp':thermostat_state['target_temp']}
+    thermostate_state['fan_on'] = currentFanOn
+
+    #- return currentFanOn

@@ -33,8 +33,7 @@ def start_fan_controller(app_state):
 
       try:
           current_temp = fan_controller_temp_sensor.getTempC()
-          #- thermostat_state = adjustThermostat(thermostat_state, current_temp)  
-          thermostat_state['fan_on'] = adjustThermostat(thermostat_state, current_temp)  
+          adjustThermostat(thermostat_state, current_temp)  
 
       except:
 
