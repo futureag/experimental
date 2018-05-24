@@ -127,7 +127,7 @@ copy_current_image = True
 #
 #
 
-from si7021 import si7021
+from python.devices.si7021 import si7021
 
 system = {'name':'mvp',
           'device_id':''}
