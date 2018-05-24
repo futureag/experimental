@@ -6,5 +6,6 @@ __pycache__/
 data/*.txt
 logs/*.log
 web/image.jpg
-config/
+config/*.*
+!config/.gitkeep
 pictures/*.*
