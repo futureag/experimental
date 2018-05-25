@@ -40,7 +40,7 @@ def start_fan_controller(app_state):
           # Limit log entries to one per minute.
           ts = time()
           if ts - thermostat_state['last_error_ts'] > 60:
-             logger.error('Failure to get temperature, no sensor found; check pins and sensor: {}, {}'.format(\
+              logger.error('Failure to get temperature, no sensor found; check pins and sensor: {}, {}'.format(\
                            exc_info()[0], exc_info()[1]))
           thermostat_state['last_error_ts'] = ts
 

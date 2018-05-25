@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from datetime import datetime
 from logging import getLogger
+from sys import exc_info
 
 from python.logData import logData
 #- from saveGlobals import setVariable
@@ -23,39 +24,37 @@ def fan_state(on_flag):
 
 def adjustThermostat(thermostat_state, temp):
 
-    #Turn the fan on or off in relationship to target temperature
+    try:
+        #Turn the fan on or off in relationship to target temperature
 
-    _fanPin = 35
-    #- priorFanOn = thermostat_state['fan_on']
-    #- targetTemp = thermostat_state['target_temp']
-    
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
-    #avoid switching pin state and messing up condition    
-    #    GPIO.setup(fanPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    #    fanOn = GPIO.input(fanPin)
-    
-    logger.info('check 3 {}, {}'.format(thermostat_state['fan_on'], thermostat_state['target_temp']))
-    
-    # TBD - should we add some hysteresous?
-    if temp > thermostat_state['target_temp']:
-        logger.info('check 1')
-        GPIO.setup(_fanPin, GPIO.OUT)
-        GPIO.output(_fanPin, GPIO.HIGH)
-        currentFanOn = True
-    else:
-        logger.info('check 2')
-        GPIO.setup(_fanPin, GPIO.OUT)
-        GPIO.output(_fanPin, GPIO.LOW)    
-        currentFanOn = False
+        _fanPin = 35
+        
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BOARD)
+        #avoid switching pin state and messing up condition    
+        #    GPIO.setup(fanPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        #    fanOn = GPIO.input(fanPin)
+        
+        priorFanOn = thermostat_state['fan_on']
 
-    # if the fan state has change then log a message. 
-    if thermostat_state['fan_on'] != currentFanOn: 
-       logger.info('Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(\
-                   thermostat_state['target_temp'], temp,\
-                   fan_state(thermostat_state['fan_on']), fan_state(currentFanOn)))
-       logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(currentFanOn), '', ''))
+        # TBD - should we add some hysteresous?
+        if temp > thermostat_state['target_temp']:
+            GPIO.setup(_fanPin, GPIO.OUT)
+            GPIO.output(_fanPin, GPIO.HIGH)
+            thermostat_state['fan_on'] = True
+        else:
+            GPIO.setup(_fanPin, GPIO.OUT)
+            GPIO.output(_fanPin, GPIO.LOW)    
+            thermostat_state['fan_on'] = False
 
-    thermostat_state['fan_on'] = currentFanOn
+        # if the fan state has changed then log a message. 
+        if thermostat_state['fan_on'] != priorFanOn: 
+           logger.info('Target Temp {}, Current Temp {:.2f}, fan was {}, fan now {}'.format(\
+                       thermostat_state['target_temp'], temp,\
+                       fan_state(priorFanOn), fan_state(thermostat_state['fan_on'])))
+           logData('fan', 'Success', 'state', 'fan', '{}'.format(fan_state(thermostat_state['fan_on'])), '', '')
 
-    #- return currentFanOn
+    except:
+        logger.error('fan controller error: {}, {}'.format(exc_info()[0], exc_info()[1]))
+
+    return

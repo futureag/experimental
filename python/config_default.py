@@ -42,9 +42,8 @@
 #                          You can use either plaintext or enrypted passwords (restrictions apply).
 
 # Included in topics (e.g data/v1/[organization_guid).  If you don't want it in the topic
-# values then set it be an empty string. Note that if you are connectiong to a mvp compatible
+# values then set it be an empty string. Note that if you are connectiong to an mvp compatible
 # mqtt broker then you will need to get the value from the broker's administrator.
-# then you will need to get the value from them and put it here.
 #
 organization_guid = ""
 
@@ -54,9 +53,13 @@ organization_guid = ""
 device_name = 'mvp'
 
 # Set the device id below to unique values.  If you want to connect to an MVP compatible cloud
-# provider then get the value from your cloud provider administrator.
+# provider then get the value from your cloud provider administrator. The device id is used
+# to uniquely identify your mvp.
 #
 device_id = ''
+# ditto for the next device id. It is used when the sytem needs to uniquely identify to the world 
+# your little sensor in your little mvp.
+#
 si7021_device_id = ''
 
 # ########### MQTT Settings #############
