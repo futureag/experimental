@@ -10,7 +10,6 @@
 #   After=network-online.target
 #   
 #   [Service]
-#   RuntimeDirectory=/home/pi/openag-mvp
 #   WorkingDirectory=/home/pi/openag-mvp
 #   User=pi
 #   ExecStart=/usr/bin/python3 /home/pi/openag-mvp/web_server.py
